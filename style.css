@@ -1,0 +1,363 @@
+/* === VARIÁVEIS GLOBAIS === */
+:root {
+  --cor-bg-principal: #0a0e1a;
+  --cor-bg-secundaria: #111827;
+  --cor-bg-card: #1e293b;
+  --cor-bg-hero: #0f172a;
+
+  --cor-destaque: #3b82f6;
+  --cor-linkedin: #0a66c2;
+  --cor-tag: #2563eb;
+  --cor-sombra: rgba(0, 0, 0, 0.5);
+
+  --cor-texto-claro: #f8fafc;
+  --cor-texto-branco: #ffffff;
+  --cor-texto-escuro: #0f172a;
+  --cor-texto-cinza: #cbd5e1;
+}
+
+/* === ESTILOS BASE === */
+body {
+  margin: 0;
+  padding-top: 80px;
+  font-family: "Arial", sans-serif;
+  background-color: var(--cor-bg-principal);
+  color: var(--cor-texto-claro);
+  scroll-behavior: smooth;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: var(--cor-bg-secundaria);
+  color: var(--cor-texto-branco);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav a {
+  color: var(--cor-texto-branco);
+  text-decoration: none;
+}
+
+section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--cor-bg-secundaria);
+  color: var(--cor-texto-claro);
+}
+
+/* === CONTAINERS === */
+.container-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.container-horizontal img {
+  max-width: 280px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 15px var(--cor-sombra);
+}
+
+.container-horizontal .texto-sobre,
+.container-horizontal .texto-formacao,
+.container-horizontal .texto-habilidades,
+.container-horizontal .bloco-projetos {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* === SEÇÃO SOBRE === */
+.texto-sobre h2 {
+  font-size: 2.8em;
+  margin-bottom: 10px;
+  color: var(--cor-destaque);
+  font-family: "Playfair Display", serif;
+}
+
+.texto-sobre p {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: var(--cor-texto-cinza);
+}
+
+/* === SEÇÃO FORMAÇÃO === */
+.titulo-educacao {
+  font-family: "Playfair Display", serif;
+  font-size: 2.2em;
+  color: var(--cor-destaque);
+  margin-bottom: 30px;
+}
+
+.linha-educacao {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.linha-educacao .ano {
+  min-width: 100px;
+  font-weight: bold;
+  color: var(--cor-texto-claro);
+  position: relative;
+  margin-right: 10px;
+}
+
+.linha-educacao .ano::before {
+  content: "★";
+  color: var(--cor-destaque);
+  margin-right: 6px;
+}
+
+.linha-educacao .info {
+  color: var(--cor-texto-cinza);
+}
+
+/* === SEÇÃO HABILIDADES === */
+.titulo-skills {
+  font-family: "Playfair Display", serif;
+  font-size: 2em;
+  text-align: center;
+  color: var(--cor-destaque);
+  margin-bottom: 25px;
+}
+
+.skills-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.skills-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.skill-badge {
+  background-color: var(--cor-tag);
+  color: var(--cor-texto-branco);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.skills-codigo {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+  color: var(--cor-texto-claro);
+}
+
+.skills-tags .tag {
+  background-color: var(--cor-destaque);
+  color: var(--cor-texto-branco);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* === SEÇÃO PROJETOS === */
+.projetos-container {
+  max-width: 800px;
+}
+
+.bloco-projetos {
+  background-image: url("assets/Fundo.png");
+  color: var(--cor-texto-cinza);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 12px 20px var(--cor-sombra);
+}
+
+.titulo-projetos {
+  font-family: "Playfair Display", serif;
+  font-size: 2.2em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tags-projetos .tag {
+  background-color: var(--cor-tag);
+  color: var(--cor-texto-branco);
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin: 5px;
+  font-size: 0.9em;
+  display: inline-block;
+}
+.project-card {
+  background: var(--cor-bg-card);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 8px 16px var(--cor-sombra);
+  transition: transform 0.2s;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+}
+.project-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.75rem;
+  color: var(--cor-destaque);
+  margin-bottom: 0.5rem;
+}
+.project-desc {
+  color: var(--cor-texto-cinza);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+.btn-view-project {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--cor-destaque);
+  color: var(--cor-texto-branco);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-view-project:hover {
+  background: #2563eb;
+}
+
+/* === SEÇÃO CONTATO === */
+.caixa-contato {
+  background-image: url("assets/Fundo.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px 90px;
+  border-radius: 12px;
+  color: var(--cor-texto-claro);
+  font-size: 0.95em;
+  text-align: left;
+  max-width: 600px;
+  box-shadow: 0 0 15px var(--cor-sombra);
+}
+
+.linkedin-link {
+  margin-top: 15px;
+}
+
+.linkedin-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--cor-linkedin);
+  color: var(--cor-texto-branco);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.95em;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.linkedin-link a:hover {
+  background-color: #084a99;
+}
+
+/* === IMAGENS POR SEÇÃO === */
+.img-sobre {
+  max-width: 320px;
+}
+
+.img-formacao {
+  min-width: 460px;
+}
+
+.img-habilidades {
+  min-width: 500px;
+}
+
+.img-contato {
+  max-width: 280px;
+}
+
+/* === VARIAÇÃO DE FUNDO === */
+.bg-principal {
+  background-color: var(--cor-bg-principal);
+}
+
+.bg-secundaria {
+  background-color: var(--cor-bg-secundaria);
+}
+.caixa-contato form,
+.caixa-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.caixa-contato label {
+  font-weight: bold;
+  color: var(--cor-texto-claro);
+}
+
+.caixa-contato input,
+.caixa-contato textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1em;
+  background-color: #1e293b;
+  color: var(--cor-texto-claro);
+  box-shadow: inset 0 0 5px var(--cor-sombra);
+}
+
+.caixa-contato input:focus,
+.caixa-contato textarea:focus {
+  outline: 2px solid var(--cor-destaque);
+  background-color: #0f172a;
+}
+
+.btn-enviar {
+  background-color: var(--cor-linkedin);
+  color: var(--cor-texto-branco);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-enviar:hover {
+  background-color: #084a99;
+}

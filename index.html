@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Higor Novakoski - Portfólio</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- CABEÇALHO -->
+    <header class="header">
+      <nav class="nav">
+        <ul>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#formacao">Formação</a></li>
+          <li><a href="#projetos">Projetos</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="secao bg-principal">
+      <div class="container-horizontal">
+        <div class="texto-sobre">
+          <h2>Olá, eu sou o Higor!</h2>
+          <p>
+            Tenho 28 anos e sou estudante de Análise e Desenvolvimento de
+            Sistemas. Apaixonado por tecnologia, já atuei em comissionamento e
+            em setores administrativos, com foco em organização e eficiência.
+          </p>
+        </div>
+        <img src="assets/Perfil.jpg" alt="Higor ilustrado" class="img-sobre" />
+      </div>
+    </section>
+
+    <!-- SEÇÃO FORMAÇÃO -->
+    <section id="formacao" class="secao bg-secundaria">
+      <div class="container-horizontal">
+        <img
+          src="assets/Formacao.jpg"
+          alt="Higor ilustrado"
+          class="img-formacao"
+        />
+        <div class="texto-formacao">
+          <h2 class="titulo-educacao">Formação</h2>
+          <div class="linha-educacao">
+            <span class="ano">2022–2023</span>
+            <div class="info">
+              <strong>CTS</strong> – Análise e Desenvolvimento de Sistemas (1ª
+              Fase)
+            </div>
+          </div>
+          <div class="linha-educacao">
+            <span class="ano">2019–2020</span>
+            <div class="info">
+              <strong>Senac</strong> – Serviços Administrativos
+            </div>
+          </div>
+          <div class="linha-educacao">
+            <span class="ano">2011–2012</span>
+            <div class="info">
+              <strong>InfoCec</strong> – Informática Completa
+            </div>
+          </div>
+          <div class="linha-educacao">
+            <span class="ano">2020</span>
+            <div class="info">
+              <strong>Conquer</strong> – Inteligência Emocional (10h)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO HABILIDADES -->
+    <section class="secao bg-principal">
+      <div class="container-horizontal">
+        <div class="texto-habilidades">
+          <h2 class="titulo-skills">Habilidades Técnicas</h2>
+          <div class="skills-lista">
+            <div>
+              <h3>Ferramentas de Software</h3>
+              <div class="skills-grid">
+                <span class="skill-badge">Ps</span>
+                <span class="skill-badge">Ai</span>
+              </div>
+            </div>
+            <div>
+              <h3>Conhecimentos em Código</h3>
+              <ul class="skills-codigo">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>React</li>
+                <li>Tailwind</li>
+              </ul>
+              <div class="skills-tags">
+                <span class="tag">Design Visual</span>
+                <span class="tag">UI/UX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img
+            src="assets/Tecnicas.jpg"
+            alt="Higor ilustrado"
+            class="img-habilidades"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO PROJETOS -->
+    <section id="projetos" class="secao bg-secundaria">
+      <div class="container-horizontal">
+        <div class="bloco-projetos">
+          <h2 class="titulo-projetos">Projetos</h2>
+          <div class="project-card">
+            <h3 class="project-title">Harvester Metro Van "em produção"</h3>
+            <p class="project-desc">
+              Landing page de vendas da nova Van Harvester Metro: descubra
+              especificações, galeria de fotos e entre em contato para testar.
+            </p>
+            <a
+              href="https://harvester-metro-van.vercel.app"
+              target="_blank"
+              class="btn-view-project"
+            >
+              <i class="fas fa-rocket"></i> Ver Demo
+            </a>
+          </div>
+
+          <div class="tags-projetos">
+            <span class="tag">#Criatividade</span>
+            <span class="tag">#Comunicação</span>
+            <span class="tag">#Adaptabilidade</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section id="contato" class="secao bg-principal">
+      <div class="container-horizontal">
+        <img
+          src="assets/Contatos.png"
+          alt="Higor ilustrado"
+          class="img-contato"
+        />
+        <form class="caixa-contato" action="#" method="POST">
+          <h2 class="titulo-projetos">Contato</h2>
+
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+
+          <button type="submit" class="btn-enviar">
+            <i class="fa-solid fa-paper-plane"></i> Enviar
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+      <p>Higor Henrique Novakoski do Nascimento</p>
+    </footer>
+  </body>
+</html>
