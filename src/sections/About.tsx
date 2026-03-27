@@ -44,7 +44,7 @@ export function About() {
               <div
                 key={item.t}
                 data-about-reveal={`${4 + index}`}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-all duration-300 hover:bg-white/[0.05]"
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:bg-white/[0.05]"
                 style={{
                   clipPath:
                     "polygon(0% 0%, 92% 0%, 100% 20%, 100% 100%, 0% 100%)",

@@ -4,7 +4,6 @@ import { copy, type Locale } from "./copy";
 export type LanguageContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  toggleLocale: () => void;
   t: (typeof copy)[Locale];
 };
 

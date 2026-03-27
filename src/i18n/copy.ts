@@ -29,8 +29,11 @@ type CopyShape = {
     statusTitle: string;
     statusValue: string;
     age: string;
+    ageValue: string;
     location: string;
+    locationValue: string;
     specialty: string;
+    specialtyValue: string;
   };
   about: {
     title: string;
@@ -99,8 +102,11 @@ export const copy: Record<Locale, CopyShape> = {
       statusTitle: "STATUS",
       statusValue: "Disponivel para novas oportunidades",
       age: "Idade",
+      ageValue: "28 anos",
       location: "Local",
+      locationValue: "Colombo / PR",
       specialty: "Especialidade",
+      specialtyValue: "UI + Front-End",
     },
     about: {
       title: "Sobre",
@@ -191,8 +197,11 @@ export const copy: Record<Locale, CopyShape> = {
       statusTitle: "STATUS",
       statusValue: "Available for new opportunities",
       age: "Age",
+      ageValue: "28 years old",
       location: "Location",
+      locationValue: "Colombo / PR",
       specialty: "Specialty",
+      specialtyValue: "UI + Front-End",
     },
     about: {
       title: "About",

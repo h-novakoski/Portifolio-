@@ -11,14 +11,14 @@ export function SystemBoot({ onComplete }: Props) {
   const completedRef = useRef(false);
 
   useEffect(() => {
-    const fadeTimer = window.setTimeout(() => setPhase("fading"), 1500);
+    const fadeTimer = window.setTimeout(() => setPhase("fading"), 1200);
     const doneTimer = window.setTimeout(() => {
       setPhase("done");
       if (!completedRef.current) {
         completedRef.current = true;
         onComplete?.();
       }
-    }, 1820);
+    }, 1540);
 
     return () => {
       window.clearTimeout(fadeTimer);

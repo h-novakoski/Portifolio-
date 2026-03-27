@@ -18,13 +18,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<LanguageContextValue>(() => {
     const setLocale = (newLocale: Locale) => setLocaleState(newLocale);
-    const toggleLocale = () =>
-      setLocaleState((current) => (current === "pt" ? "en" : "pt"));
 
     return {
       locale,
       setLocale,
-      toggleLocale,
       t: copy[locale],
     };
   }, [locale]);

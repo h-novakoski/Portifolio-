@@ -4,40 +4,44 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const SELECTORS = {
   heroSection: "#top",
   heroStage: "[data-hero-stage]",
+  heroReveal: "[data-hero-reveal]",
   aboutSection: "#about",
   projectsSection: "#projects",
-  aboutReveal: "[data-about-reveal]",
-  projectsReveal: "[data-projects-reveal]",
+  aboutReveal: "[data-about-reveal]:not([data-reveal-decor])",
+  projectsReveal: "[data-projects-reveal]:not([data-reveal-decor])",
   reveal: "[data-reveal]",
   parallax: "[data-parallax]",
 };
 
-const HERO_EXIT = {
+const ABOUT_TOGGLE_ACTIONS = "play reverse play reverse";
+const PROJECTS_TOGGLE_ACTIONS = "play none none reverse";
+
+const HERO_REVEAL = {
   start: "top top",
-  end: "bottom 34%",
-  scrub: 0.9,
-  y: -14,
-  scale: 0.992,
+  end: "bottom 26%",
+  duration: 0.74,
+  phaseStep: 0.1,
+  initialX: 16,
+  initialScale: 1,
 };
 
 const STAGED_REVEAL = {
   about: {
     start: "top 66%",
-    fallbackEnd: "bottom 30%",
-    projectsEnd: "top 86%",
-    duration: 0.72,
-    phaseStep: 0.09,
-    initialX: 22,
-    initialScale: 1.004,
+    end: "bottom 24%",
+    duration: 0.76,
+    phaseStep: 0.1,
+    initialX: 16,
+    initialScale: 1,
   },
   projects: {
     start: "top 48%",
     end: "bottom 34%",
-    duration: 0.82,
-    phaseStep: 0.14,
-    baseDelay: 0.85,
-    initialX: 20,
-    initialScale: 1.003,
+    duration: 0.78,
+    phaseStep: 0.1,
+    baseDelay: 0.3,
+    initialX: 14,
+    initialScale: 1,
   },
 };
 
@@ -74,6 +78,7 @@ function setRevealInitialState(
 
 function revealAllForReducedMotion() {
   const staticRevealTargets = [
+    ...gsap.utils.toArray<HTMLElement>(SELECTORS.heroReveal),
     ...gsap.utils.toArray<HTMLElement>(SELECTORS.aboutReveal),
     ...gsap.utils.toArray<HTMLElement>(SELECTORS.projectsReveal),
     ...gsap.utils.toArray<HTMLElement>(SELECTORS.reveal),
@@ -94,7 +99,7 @@ export function setupScrollFX() {
 
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   gsap.killTweensOf(
-    `${SELECTORS.reveal}, ${SELECTORS.aboutReveal}, ${SELECTORS.projectsReveal}`,
+    `${SELECTORS.heroReveal}, ${SELECTORS.reveal}, ${SELECTORS.aboutReveal}, ${SELECTORS.projectsReveal}`,
   );
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -109,27 +114,60 @@ export function setupScrollFX() {
   const projectsSection = getSection(SELECTORS.projectsSection);
 
   if (heroSection && heroStage) {
+    const heroItems = sortByPhase(
+      gsap.utils.toArray<HTMLElement>(SELECTORS.heroReveal, heroSection),
+      "heroReveal",
+    );
+
+    if (heroItems.length) {
+      setRevealInitialState(
+        heroItems,
+        HERO_REVEAL.initialX,
+        HERO_REVEAL.initialScale,
+      );
+
+      const heroTimeline = gsap
+        .timeline({
+          paused: true,
+          defaults: { overwrite: "auto" },
+        })
+        .to(heroItems, {
+          autoAlpha: 1,
+          x: 0,
+          duration: HERO_REVEAL.duration,
+          ease: "power3.out",
+          stagger: {
+            each: 0,
+            from: 0,
+            amount: 0,
+            grid: "auto",
+          },
+          delay: (_index, target) =>
+            Number((target as HTMLElement).dataset.heroReveal ?? "0") *
+            HERO_REVEAL.phaseStep,
+        });
+
+      // Garante reveal inicial no topo da pagina e usa scroll apenas para reverter.
+      heroTimeline.play(0);
+
+      ScrollTrigger.create({
+        trigger: heroSection,
+        start: HERO_REVEAL.start,
+        end: HERO_REVEAL.end,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
+        onEnter: () => heroTimeline.play(),
+        onLeave: () => heroTimeline.reverse(),
+        onLeaveBack: () => heroTimeline.play(0),
+      });
+    }
+
     gsap.set(heroStage, {
       autoAlpha: 1,
       x: 0,
       y: 0,
       scale: 1,
       force3D: true,
-    });
-
-    gsap.to(heroStage, {
-      autoAlpha: 0,
-      y: -14,
-      scale: 0.992,
-      ease: "none",
-      overwrite: "auto",
-      scrollTrigger: {
-        trigger: heroSection,
-        start: HERO_EXIT.start,
-        end: HERO_EXIT.end,
-        scrub: HERO_EXIT.scrub,
-        invalidateOnRefresh: true,
-      },
     });
   }
 
@@ -152,18 +190,15 @@ export function setupScrollFX() {
           scrollTrigger: {
             trigger: aboutSection,
             start: STAGED_REVEAL.about.start,
-            endTrigger: projectsSection ?? aboutSection,
-            end: projectsSection
-              ? STAGED_REVEAL.about.projectsEnd
-              : STAGED_REVEAL.about.fallbackEnd,
-            toggleActions: "play reverse play reverse",
+            end: STAGED_REVEAL.about.end,
+            toggleActions: ABOUT_TOGGLE_ACTIONS,
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           },
         })
         .to(aboutItems, {
           autoAlpha: 1,
           x: 0,
-          scale: 1,
           duration: STAGED_REVEAL.about.duration,
           ease: "power3.out",
           stagger: {
@@ -202,14 +237,14 @@ export function setupScrollFX() {
             trigger: projectsSection,
             start: STAGED_REVEAL.projects.start,
             end: STAGED_REVEAL.projects.end,
-            toggleActions: "play reverse play reverse",
+            toggleActions: PROJECTS_TOGGLE_ACTIONS,
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           },
         })
         .to(projectsItems, {
           autoAlpha: 1,
           x: 0,
-          scale: 1,
           duration: STAGED_REVEAL.projects.duration,
           ease: "power3.out",
           stagger: {

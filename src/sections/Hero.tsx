@@ -25,26 +25,41 @@ export function Hero() {
           >
             {/* LEFT SIDE */}
             <div>
-              <div className="reveal-phase-1 mb-6 flex items-center gap-3">
+              <div
+                data-hero-reveal="1"
+                className="reveal-phase-1 mb-6 flex items-center gap-3"
+              >
                 <span className="h-px flex-1 bg-white/10" />
                 <span className="text-[10px] tracking-[0.45em] text-white/45">
                   {t.hero.eyebrow}
                 </span>
               </div>
 
-              <h1 className="reveal-phase-2 hud-title text-5xl font-bold tracking-tight md:text-7xl">
+              <h1
+                data-hero-reveal="2"
+                className="reveal-phase-2 hud-title text-5xl font-bold tracking-tight md:text-7xl"
+              >
                 Higor Henrique
               </h1>
 
-              <div className="reveal-phase-3 hud-title mt-2 text-4xl font-bold tracking-tight text-white/65 md:text-5xl">
+              <div
+                data-hero-reveal="3"
+                className="reveal-phase-3 hud-title mt-2 text-4xl font-bold tracking-tight text-white/65 md:text-5xl"
+              >
                 {t.hero.role}
               </div>
 
-              <p className="reveal-phase-4 mt-6 max-w-xl text-sm leading-relaxed text-white/72 md:text-base">
+              <p
+                data-hero-reveal="4"
+                className="reveal-phase-4 mt-6 max-w-xl text-sm leading-relaxed text-white/72 md:text-base"
+              >
                 {t.hero.desc}
               </p>
 
-              <div className="reveal-phase-5 mt-8 flex flex-wrap gap-3">
+              <div
+                data-hero-reveal="5"
+                className="reveal-phase-5 mt-8 flex flex-wrap gap-3"
+              >
                 <a
                   href="#about"
                   className="rounded-full border border-white/20 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-white/90 transition hover:border-glowB/45 hover:bg-white/[0.08]"
@@ -59,7 +74,10 @@ export function Hero() {
                 </a>
               </div>
 
-              <div className="reveal-phase-6 mt-8 flex flex-wrap gap-2 text-[11px] tracking-[0.2em] text-white/62">
+              <div
+                data-hero-reveal="6"
+                className="reveal-phase-6 mt-8 flex flex-wrap gap-2 text-[11px] tracking-[0.2em] text-white/62"
+              >
                 {t.hero.tags.map((tag) => (
                   <span
                     key={tag}
@@ -73,6 +91,7 @@ export function Hero() {
 
             {/* RIGHT SIDE - HUD CARD */}
             <div
+              data-hero-reveal="7"
               className="reveal-phase-7 relative overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.025] p-6 shadow-[0_30px_90px_rgba(0,0,0,.55)]"
               style={{
                 clipPath:
@@ -96,17 +115,17 @@ export function Hero() {
               <div className="mt-6 space-y-3 text-sm">
                 <div className="flex items-center justify-between gap-6">
                   <span className="text-white/45">{t.hero.age}</span>
-                  <span className="text-white/75">28 anos</span>
+                  <span className="text-white/75">{t.hero.ageValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between gap-6">
                   <span className="text-white/45">{t.hero.location}</span>
-                  <span className="text-white/75">Colombo / PR</span>
+                  <span className="text-white/75">{t.hero.locationValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between gap-6">
                   <span className="text-white/45">{t.hero.specialty}</span>
-                  <span className="text-white/75">UI + Front-End</span>
+                  <span className="text-white/75">{t.hero.specialtyValue}</span>
                 </div>
               </div>
 

@@ -123,6 +123,7 @@ export function ChapterSection({
                   : isProjectsSection
                     ? { "data-projects-reveal": "2" }
                     : {})}
+                data-reveal-decor="true"
                 className="pointer-events-none absolute inset-0 z-[0]"
               >
                 <div

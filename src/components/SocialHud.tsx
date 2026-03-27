@@ -1,19 +1,33 @@
-import { Linkedin, Mail, MessageCircle } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
+
+function WhatsAppIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      fill="currentColor"
+    >
+      <path d="M12 2.04a9.93 9.93 0 0 0-8.57 15l-1.4 4.92 5.04-1.32A9.96 9.96 0 1 0 12 2.04Zm0 18.08c-1.54 0-3.05-.42-4.36-1.2l-.31-.18-2.98.78.83-2.92-.2-.31a8.06 8.06 0 1 1 7.02 3.83Zm4.42-5.89c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12-.16.24-.62.77-.76.93-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.19a7.15 7.15 0 0 1-1.33-1.65c-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.57 4.09 3.6.57.25 1.01.4 1.36.51.57.18 1.09.15 1.5.09.46-.07 1.4-.57 1.6-1.12.2-.55.2-1.02.14-1.12-.06-.1-.22-.16-.46-.28Z" />
+    </svg>
+  );
+}
 
 const links = [
   {
     icon: Linkedin,
-    href: "https://linkedin.com/in/seuusuario",
+    href: "https://www.linkedin.com/in/higor-novakoski/",
     label: "LinkedIn",
   },
   {
-    icon: MessageCircle,
-    href: "https://wa.me/5599999999999",
+    icon: WhatsAppIcon,
+    href: "https://wa.me/5541920002316",
     label: "WhatsApp",
   },
   {
     icon: Mail,
-    href: "mailto:seuemail@email.com",
+    href: "mailto:higor.novakoski@gmail.com",
     label: "Email",
   },
 ];
