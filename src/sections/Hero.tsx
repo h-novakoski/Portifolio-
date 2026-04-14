@@ -18,7 +18,7 @@ export function Hero() {
       />
 
       <Container>
-        <div className="relative flex min-h-[74vh] items-center py-12 md:min-h-[78vh] md:py-14">
+        <div className="relative flex min-h-[74vh] items-start pb-12 pt-24 md:min-h-[78vh] md:pb-14 md:pt-24">
           <div
             data-hero-stage
             className="grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr]"

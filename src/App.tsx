@@ -4,9 +4,8 @@ import { Hero } from "./sections/Hero";
 import { About } from "./sections/About";
 import { Projects } from "./sections/Projects";
 import { CursorGlow } from "./components/CursorGlow";
-import { SocialHud } from "./components/SocialHud";
-import { TopHudBar } from "./components/TopHudBar";
 import { SystemBoot } from "./components/SystemBoot";
+import { SitePhaseNav } from "./components/SitePhaseNav";
 
 export default function App() {
   const [bootDone, setBootDone] = useState(false);
@@ -26,12 +25,11 @@ export default function App() {
       <SystemBoot onComplete={handleBootComplete} />
 
       <div className={`app-shell ${bootDone ? "app-shell--ready" : ""}`}>
-        <TopHudBar />
+        <SitePhaseNav />
         <Hero />
         <About />
         <Projects />
         <CursorGlow />
-        <SocialHud />
       </div>
     </div>
   );
