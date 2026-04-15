@@ -5,7 +5,10 @@ export function Hero() {
   const { t } = useLanguage();
 
   return (
-    <section id="top" className="relative bg-ink text-white">
+    <section
+      id="top"
+      className="relative scroll-mt-[108px] bg-ink text-white xl:scroll-mt-[112px]"
+    >
       {/* Background glow */}
       <div
         className="pointer-events-none absolute inset-0 opacity-70"

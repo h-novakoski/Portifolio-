@@ -151,7 +151,7 @@ export function SitePhaseNav() {
   return (
     <>
       <div className="pointer-events-none absolute inset-y-0 left-0 z-[95] hidden lg:block">
-        <aside className="pointer-events-auto sticky top-24 ml-4">
+        <aside className="pointer-events-auto sticky ml-4 top-[108px] xl:top-[112px]">
           <div
             className="relative isolate w-[230px] overflow-hidden rounded-2xl border bg-[linear-gradient(180deg,rgba(8,10,18,.96),rgba(6,8,14,.92))] p-3 backdrop-blur-md"
             style={{

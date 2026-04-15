@@ -236,55 +236,84 @@ export function Projects() {
   }, [project.id]);
 
   return (
-    <ChapterSection id="projects" title={t.projects.title} bare>
+    <ChapterSection id="projects" title={t.projects.title}>
       <div
         ref={swapScopeRef}
         data-projects-reveal="2"
         data-project-swap-preset="cinematic"
-        className="scanlines-bg relative overflow-hidden rounded-[26px] border shadow-[0_30px_90px_rgba(0,0,0,.65)]"
-        style={{ borderColor: "rgba(168,85,247,.28)" }}
+        className="scanlines-bg relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] shadow-[0_30px_90px_rgba(0,0,0,.5)]"
       >
-        {/* Top-line glow */}
         <div
-          className="pointer-events-none absolute left-0 top-0 z-10 h-px w-full"
+          className="pointer-events-none absolute left-0 top-0 z-[2] h-px w-full"
           style={{
             background:
-              "linear-gradient(90deg,transparent,rgba(168,85,247,.6) 40%,rgba(0,255,224,.5) 60%,transparent)",
+              "linear-gradient(90deg,transparent,rgba(168,85,247,.6) 40%,rgba(0,255,224,.4) 60%,transparent)",
+            opacity: 0.5,
           }}
         />
 
-        {/* ================== BACKGROUND PREVIEW ================== */}
         <div className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg,rgba(168,85,247,.10) 0%,rgba(0,255,224,.05) 50%,transparent 100%)",
+            }}
+          />
+
           {project.preview ? (
             <div
               data-project-swap-bg
-              className="absolute inset-0 bg-cover bg-center opacity-45 transition-all duration-500"
+              className="absolute inset-0 bg-cover bg-center opacity-50 transition-all duration-500"
               style={{ backgroundImage: `url(${project.preview})` }}
             />
           ) : null}
 
-          {/* Dark cinematic overlay — stronger */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.2)_0,rgba(0,0,0,.65)_55%,rgba(0,0,0,.92)_100%)]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 20%,transparent 0,rgba(0,0,0,.45) 55%,rgba(0,0,0,.82) 100%)",
+            }}
+          />
 
-          {/* Grid */}
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(168,85,247,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,.07)_1px,transparent_1px)] [background-size:40px_40px]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              opacity: 0.07,
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
 
-          {/* Scanlines */}
-          <div className="absolute inset-0 opacity-[0.10] [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:100%_4px]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              opacity: 0.08,
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px)",
+              backgroundSize: "100% 4px",
+            }}
+          />
         </div>
 
-        {/* ================== CONTENT ================== */}
-        <div className="relative grid gap-12 p-8 md:p-12 lg:grid-cols-[1.15fr_.85fr]">
-          {/* LEFT SIDE */}
-          <div className="max-w-2xl">
+        <div className="relative grid gap-10 p-8 md:p-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-12">
+          <div className="max-w-[560px]">
             <div
               data-projects-reveal="2"
               data-project-swap
-              className="mb-6 flex items-center gap-3"
+              className="mb-5 flex items-center gap-2.5"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-glowB/80" />
+              <span
+                className="h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                style={{ background: "rgba(70,160,255,.8)" }}
+              />
               <span className="h-px flex-1 bg-white/10" />
-              <span className="text-[10px] tracking-[0.45em] text-white/45">
+              <span
+                className="font-mono text-[10px] tracking-[0.42em]"
+                style={{ color: "rgba(255,255,255,.42)" }}
+              >
                 {t.projects.activeFile}
               </span>
             </div>
@@ -292,7 +321,8 @@ export function Projects() {
             <h3
               data-projects-reveal="3"
               data-project-swap
-              className="text-3xl font-bold tracking-tight text-white md:text-4xl"
+              className="hud-title text-3xl font-bold leading-tight text-white/95 md:text-4xl"
+              style={{ textShadow: "0 0 20px rgba(168,85,247,.3)" }}
             >
               {project.title}
             </h3>
@@ -300,7 +330,7 @@ export function Projects() {
             <div
               data-projects-reveal="4"
               data-project-swap
-              className="mt-3 inline-flex items-center font-mono text-[10px] tracking-[0.25em] border bg-black/30 px-3 py-1"
+              className="mt-3 inline-flex items-center border bg-black/30 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em]"
               style={{
                 borderColor: "rgba(0,255,224,.22)",
                 color: "rgba(0,255,224,.68)",
@@ -308,7 +338,7 @@ export function Projects() {
                   "polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)",
               }}
             >
-              ◈ {project.subtitle}
+              {"\u25C8"} {project.subtitle}
             </div>
 
             <div className="mt-5">
@@ -337,17 +367,13 @@ export function Projects() {
               <div
                 data-projects-reveal="6"
                 data-project-swap
-                className="border-l-2 p-4 text-sm text-white/72"
-                style={{
-                  borderColor: "rgba(168,85,247,.3)",
-                  background: "rgba(168,85,247,.04)",
-                }}
+                className="rounded-[10px] border border-white/10 bg-black/25 p-4 text-sm text-white/72"
               >
                 <span
                   className="mr-2 font-mono text-[9px]"
-                  style={{ color: "rgba(168,85,247,.6)" }}
+                  style={{ color: "rgba(255,255,255,.42)" }}
                 >
-                  ▸
+                  {"\u25B8"}
                 </span>
                 {project.impact}
               </div>
@@ -370,7 +396,7 @@ export function Projects() {
                     key={tag}
                     className={i % 2 === 0 ? "hud-tag" : "hud-tag hud-tag-c"}
                   >
-                    ◇ {tag}
+                    {"\u25C7"} {tag}
                   </span>
                 ))}
               </div>
@@ -381,38 +407,47 @@ export function Projects() {
               data-project-swap
               className="mt-7 flex flex-wrap gap-3"
             >
-              <button className="hud-btn">◈ {t.projects.viewCase}</button>
-              <button className="hud-btn hud-btn-p">◈ {t.projects.github}</button>
+              <button className="hud-btn">
+                {"\u25C8"} {t.projects.viewCase}
+              </button>
+              <button className="hud-btn hud-btn-p">
+                {"\u25C8"} {t.projects.github}
+              </button>
             </div>
           </div>
 
-          {/* RIGHT HUD PANEL */}
           <div
             data-projects-reveal="6"
             data-project-swap
             data-project-swap-panel
-            className="relative border bg-black/40 p-6"
+            className="relative self-start rounded-[20px] border border-white/10 bg-black/30 p-6 md:p-7"
             style={{
               clipPath:
                 "polygon(0% 0%,92% 0%,100% 8%,100% 100%,8% 100%,0% 92%)",
-              borderColor: "rgba(168,85,247,.28)",
-              boxShadow: "inset 0 0 40px rgba(168,85,247,.04)",
             }}
           >
             <div
               className="pointer-events-none absolute left-0 top-0 h-px w-full"
               style={{
                 background:
-                  "linear-gradient(90deg,transparent,rgba(168,85,247,.7) 60%,transparent)",
-                opacity: 0.55,
+                  "linear-gradient(90deg,transparent,rgba(168,85,247,.65) 55%,transparent)",
               }}
             />
 
             <div data-project-swap-panel-item>
-              <div className="text-[10px] tracking-[0.45em] text-white/45">
-                {t.projects.panelStatus}
+              <div
+                className="font-mono text-[8px] tracking-[0.38em]"
+                style={{ color: "rgba(255,255,255,.3)" }}
+              >
+                // {t.projects.panelStatus}
               </div>
-              <div className="mt-1 text-lg font-semibold text-white/85">
+              <div
+                className="mt-1 text-lg font-semibold"
+                style={{
+                  fontFamily: "'Rajdhani', sans-serif",
+                  color: "rgba(238,244,255,.85)",
+                }}
+              >
                 {t.projects.panelStatusValue}
               </div>
             </div>
@@ -442,10 +477,10 @@ export function Projects() {
                     className="absolute left-0 font-mono text-[8px]"
                     style={{ color: "rgba(0,255,224,.3)" }}
                   >
-                    ◂
+                    {"\u25C2"}
                   </span>
                   <span
-                    className="font-mono text-[9px] tracking-[0.2em] uppercase pl-2"
+                    className="pl-2 font-mono text-[9px] uppercase tracking-[0.2em]"
                     style={{ color: "rgba(255,255,255,.38)" }}
                   >
                     {label}
@@ -462,22 +497,32 @@ export function Projects() {
 
             <div
               data-project-swap-panel-item
-              className="my-6 h-px bg-white/10"
+              className="my-5 h-px"
+              style={{ background: "rgba(168,85,247,.14)" }}
             />
 
-            <div data-project-swap-panel-item className="text-xs text-white/60">
+            <div
+              data-project-swap-panel-item
+              className="text-xs leading-relaxed"
+              style={{ color: "rgba(214,225,248,.45)" }}
+            >
               {t.projects.helper}
             </div>
 
-            <div className="pointer-events-none absolute bottom-4 left-6 right-6 flex items-center gap-3 opacity-60">
+            <div className="pointer-events-none absolute bottom-4 left-6 right-6 flex items-center gap-3 opacity-55">
               <span className="h-px flex-1 bg-white/10" />
-              <span className="h-1 w-1 rounded-full bg-glowB/70" />
-              <span className="h-px w-10 bg-glowV/40" />
+              <span
+                className="h-1 w-1 rounded-full"
+                style={{ background: "rgba(70,160,255,.7)" }}
+              />
+              <span
+                className="h-px w-10"
+                style={{ background: "rgba(168,85,247,.4)" }}
+              />
             </div>
           </div>
         </div>
 
-        {/* ================== STEPPER ================== */}
         <div
           data-projects-reveal="9"
           className="relative border-t border-white/10 bg-black/40 px-6 py-6"
@@ -486,7 +531,7 @@ export function Projects() {
             total={projects.length}
             active={safeActive}
             onChange={setActive}
-            className="mx-auto max-w-[980px]"
+            className="mx-auto w-full max-w-[980px]"
           />
         </div>
       </div>
