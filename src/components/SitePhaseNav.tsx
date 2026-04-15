@@ -11,14 +11,6 @@ import { useEffect, useMemo, useState, type ComponentType } from "react";
 import menuBg from "../assets/Gravando 2026-03-27 185048.mp4";
 import { useLanguage } from "../i18n/useLanguage";
 
-function pad(value: number) {
-  return String(value).padStart(2, "0");
-}
-
-function formatTime(date: Date) {
-  return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-}
-
 type PhaseItem = {
   id: string;
   href: string;
@@ -53,7 +45,6 @@ export function SitePhaseNav() {
   const { locale, setLocale, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeId, setActiveId] = useState("top");
-  const [clock, setClock] = useState(() => new Date());
   const phases = useMemo<PhaseItem[]>(
     () => [
       {
@@ -108,11 +99,6 @@ export function SitePhaseNav() {
     ],
     [locale],
   );
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setClock(new Date()), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const ids = phases.map((phase) => phase.id);
@@ -219,9 +205,6 @@ export function SitePhaseNav() {
                       </span>
                     </span>
                   </button>
-                  <span className="text-[8px] font-medium tracking-[0.14em] text-white/60">
-                    {formatTime(clock)}
-                  </span>
                 </div>
               </div>
             </div>
