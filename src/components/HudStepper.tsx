@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 type Props = {
   total: number;
@@ -24,7 +24,10 @@ export function HudStepper({
   const trackRef = useRef<HTMLDivElement | null>(null);
   const animationRef = useRef<Animation | null>(null);
 
-  const wrapIndex = (index: number) => ((index % total) + total) % total;
+  const wrapIndex = useCallback(
+    (index: number) => ((index % total) + total) % total,
+    [total],
+  );
 
   const visibleSteps = useMemo(() => {
     if (total <= WINDOW_SIZE) {
@@ -43,7 +46,7 @@ export function HudStepper({
         distance,
       };
     });
-  }, [active, total]);
+  }, [active, total, wrapIndex]);
 
   const beginGesture = (pageX: number) => {
     pointerStartX.current = pageX;
