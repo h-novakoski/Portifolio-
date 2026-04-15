@@ -29,7 +29,6 @@ export default function App() {
         <Hero />
         <About />
         <Projects />
-        <div aria-hidden="true" className="h-6 md:h-10" />
         <CursorGlow />
       </div>
     </div>

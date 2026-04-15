@@ -298,8 +298,8 @@ export function Projects() {
           />
         </div>
 
-        <div className="relative grid gap-10 p-8 md:p-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-12">
-          <div className="max-w-[560px]">
+        <div className="relative grid gap-10 p-8 md:p-10 lg:min-h-[620px] lg:grid-cols-[1.15fr_.85fr] lg:gap-12">
+          <div className="flex max-w-[560px] flex-col lg:min-h-[520px]">
             <div
               data-projects-reveal="2"
               data-project-swap
@@ -405,7 +405,7 @@ export function Projects() {
             <div
               data-projects-reveal="8"
               data-project-swap
-              className="mt-7 flex flex-wrap gap-3"
+              className="mt-7 flex flex-wrap gap-3 lg:mt-auto"
             >
               <button className="hud-btn">
                 {"\u25C8"} {t.projects.viewCase}
@@ -420,7 +420,7 @@ export function Projects() {
             data-projects-reveal="6"
             data-project-swap
             data-project-swap-panel
-            className="relative self-start rounded-[20px] border border-white/10 bg-black/30 p-6 md:p-7"
+            className="relative self-start rounded-[20px] border border-white/10 bg-black/30 p-6 md:p-7 lg:min-h-[420px]"
             style={{
               clipPath:
                 "polygon(0% 0%,92% 0%,100% 8%,100% 100%,8% 100%,0% 92%)",

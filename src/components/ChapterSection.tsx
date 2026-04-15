@@ -52,7 +52,7 @@ export function ChapterSection({
             isAboutSection
               ? "pt-0 pb-10 md:pt-0 md:pb-12"
               : isProjectsSection
-                ? "pt-0 pb-8 md:pt-0 md:pb-20"
+                ? "pt-0 pb-0 md:pt-0 md:pb-6"
                 : "py-16 md:py-20",
           ].join(" ")}
         >

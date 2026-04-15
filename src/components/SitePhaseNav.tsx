@@ -54,7 +54,6 @@ export function SitePhaseNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeId, setActiveId] = useState("top");
   const [clock, setClock] = useState(() => new Date());
-
   const phases = useMemo<PhaseItem[]>(
     () => [
       {
@@ -151,7 +150,7 @@ export function SitePhaseNav() {
   return (
     <>
       <div className="pointer-events-none absolute inset-y-0 left-0 z-[95] hidden lg:block">
-        <aside className="pointer-events-auto sticky ml-4 top-[108px] xl:top-[112px]">
+        <aside className="pointer-events-auto sticky ml-10 top-[108px] xl:top-[112px]">
           <div
             className="relative isolate w-[230px] overflow-hidden rounded-2xl border bg-[linear-gradient(180deg,rgba(8,10,18,.96),rgba(6,8,14,.92))] p-3 backdrop-blur-md"
             style={{
@@ -206,18 +205,14 @@ export function SitePhaseNav() {
                     <span className="relative z-10 grid w-full grid-cols-2 text-[8px] font-medium tracking-[0.14em]">
                       <span
                         className={
-                          locale === "pt"
-                            ? "text-white"
-                            : "text-white/40"
+                          locale === "pt" ? "text-white" : "text-white/40"
                         }
                       >
                         PT
                       </span>
                       <span
                         className={
-                          locale === "en"
-                            ? "text-white"
-                            : "text-white/40"
+                          locale === "en" ? "text-white" : "text-white/40"
                         }
                       >
                         EN
@@ -441,8 +436,7 @@ export function SitePhaseNav() {
                     </span>
                     <span
                       className={isActive ? "text-glowB/90" : "text-white/45"}
-                    >
-                    </span>
+                    ></span>
                   </a>
                 );
               })}
