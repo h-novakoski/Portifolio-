@@ -60,30 +60,24 @@ export function Hero() {
                 data-hero-reveal="5"
                 className="reveal-phase-5 mt-8 flex flex-wrap gap-3"
               >
-                <a
-                  href="#about"
-                  className="rounded-full border border-white/20 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-white/90 transition hover:border-glowB/45 hover:bg-white/[0.08]"
-                >
-                  {t.hero.aboutCta}
+                <a href="#about" className="hud-btn">
+                  ◈ {t.hero.aboutCta}
                 </a>
-                <a
-                  href="#projects"
-                  className="rounded-full border border-glowV/40 bg-[linear-gradient(180deg,rgba(140,90,255,0.16),rgba(140,90,255,0.05))] px-6 py-3 text-sm font-semibold text-white/95 transition hover:border-glowV/70 hover:shadow-[0_0_24px_rgba(140,90,255,.28)]"
-                >
-                  {t.hero.projectsCta}
+                <a href="#projects" className="hud-btn hud-btn-p">
+                  ◈ {t.hero.projectsCta}
                 </a>
               </div>
 
               <div
                 data-hero-reveal="6"
-                className="reveal-phase-6 mt-8 flex flex-wrap gap-2 text-[11px] tracking-[0.2em] text-white/62"
+                className="reveal-phase-6 mt-8 flex flex-wrap gap-2"
               >
-                {t.hero.tags.map((tag) => (
+                {t.hero.tags.map((tag, i) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1"
+                    className={i % 2 === 0 ? "hud-tag" : "hud-tag hud-tag-c"}
                   >
-                    {tag}
+                    ◇ {tag}
                   </span>
                 ))}
               </div>
@@ -92,14 +86,16 @@ export function Hero() {
             {/* RIGHT SIDE - HUD CARD */}
             <div
               data-hero-reveal="7"
-              className="reveal-phase-7 relative overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.025] p-6 shadow-[0_30px_90px_rgba(0,0,0,.55)]"
+              className="reveal-phase-7 relative overflow-hidden rounded-[30px] border p-6 shadow-[0_30px_90px_rgba(0,0,0,.55)] grid-pattern"
               style={{
                 clipPath:
                   "polygon(0% 0%, 94% 0%, 100% 12%, 100% 100%, 8% 100%, 0% 90%)",
+                borderColor: "var(--border-purple-light)",
+                backgroundColor: "var(--bg-purple-ultra-light)",
               }}
             >
               {/* Top glow line */}
-              <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-glowV/60 to-transparent" />
+              <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-[var(--color-purple-primary)] via-60% to-transparent opacity-50" />
 
               {/* Header */}
               <div>
@@ -127,6 +123,23 @@ export function Hero() {
                   <span className="text-white/45">{t.hero.specialty}</span>
                   <span className="text-white/75">{t.hero.specialtyValue}</span>
                 </div>
+              </div>
+
+              {/* Status online dot */}
+              <div className="mt-5 flex items-center gap-2.5">
+                <span
+                  className="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan-bright)]"
+                  style={{
+                    animation: "pulse-dot 2s ease-in-out infinite",
+                    boxShadow: "0 0 0 0 rgba(0,255,224,.4)",
+                  }}
+                />
+                <span
+                  className="font-mono text-[10px] tracking-[0.22em]"
+                  style={{ color: "rgba(0,255,224,.75)" }}
+                >
+                  ONLINE // ABERTO A PROPOSTAS
+                </span>
               </div>
 
               {/* Bottom HUD line */}

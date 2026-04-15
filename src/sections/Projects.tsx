@@ -236,31 +236,41 @@ export function Projects() {
   }, [project.id]);
 
   return (
-    <ChapterSection id="projects" title={t.projects.title}>
+    <ChapterSection id="projects" title={t.projects.title} bare>
       <div
         ref={swapScopeRef}
         data-projects-reveal="2"
         data-project-swap-preset="cinematic"
-        className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03]"
+        className="scanlines-bg relative overflow-hidden rounded-[26px] border shadow-[0_30px_90px_rgba(0,0,0,.65)]"
+        style={{ borderColor: "rgba(168,85,247,.28)" }}
       >
+        {/* Top-line glow */}
+        <div
+          className="pointer-events-none absolute left-0 top-0 z-10 h-px w-full"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,rgba(168,85,247,.6) 40%,rgba(0,255,224,.5) 60%,transparent)",
+          }}
+        />
+
         {/* ================== BACKGROUND PREVIEW ================== */}
         <div className="pointer-events-none absolute inset-0">
           {project.preview ? (
             <div
               data-project-swap-bg
-              className="absolute inset-0 bg-cover bg-center opacity-55 transition-all duration-500"
+              className="absolute inset-0 bg-cover bg-center opacity-45 transition-all duration-500"
               style={{ backgroundImage: `url(${project.preview})` }}
             />
           ) : null}
 
-          {/* Dark cinematic overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,transparent_0,rgba(0,0,0,.45)_55%,rgba(0,0,0,.85)_100%)]" />
+          {/* Dark cinematic overlay — stronger */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.2)_0,rgba(0,0,0,.65)_55%,rgba(0,0,0,.92)_100%)]" />
 
           {/* Grid */}
-          <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:40px_40px]" />
+          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(168,85,247,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,.07)_1px,transparent_1px)] [background-size:40px_40px]" />
 
           {/* Scanlines */}
-          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px)] [background-size:100%_4px]" />
+          <div className="absolute inset-0 opacity-[0.10] [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:100%_4px]" />
         </div>
 
         {/* ================== CONTENT ================== */}
@@ -290,43 +300,80 @@ export function Projects() {
             <div
               data-projects-reveal="4"
               data-project-swap
-              className="mt-3 inline-flex items-center rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs tracking-[0.25em] text-white/60"
+              className="mt-3 inline-flex items-center font-mono text-[10px] tracking-[0.25em] border bg-black/30 px-3 py-1"
+              style={{
+                borderColor: "rgba(0,255,224,.22)",
+                color: "rgba(0,255,224,.68)",
+                clipPath:
+                  "polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)",
+              }}
             >
-              {project.subtitle}
+              ◈ {project.subtitle}
             </div>
 
-            <p
-              data-projects-reveal="5"
-              data-project-swap
-              className="mt-6 text-sm leading-relaxed text-white/70 md:text-base"
-            >
-              {project.desc}
-            </p>
-
-            <div
-              data-projects-reveal="6"
-              data-project-swap
-              className="mt-4 rounded-xl border border-white/10 bg-black/25 p-4 text-sm text-white/72"
-            >
-              <span className="mr-2 text-[10px] uppercase tracking-[0.35em] text-white/50">
-                {t.projects.impact}
-              </span>
-              {project.impact}
+            <div className="mt-5">
+              <div
+                className="mb-1.5 font-mono text-[8px] tracking-[0.3em]"
+                style={{ color: "rgba(168,85,247,.5)" }}
+              >
+                // DESC
+              </div>
+              <p
+                data-projects-reveal="5"
+                data-project-swap
+                className="text-sm leading-relaxed text-white/70 md:text-base"
+              >
+                {project.desc}
+              </p>
             </div>
 
-            <div
-              data-projects-reveal="7"
-              data-project-swap
-              className="mt-6 flex flex-wrap gap-2"
-            >
-              {project.tags.map((tag) => (
+            <div className="mt-4">
+              <div
+                className="mb-1.5 font-mono text-[8px] tracking-[0.3em]"
+                style={{ color: "rgba(168,85,247,.5)" }}
+              >
+                // IMPACT
+              </div>
+              <div
+                data-projects-reveal="6"
+                data-project-swap
+                className="border-l-2 p-4 text-sm text-white/72"
+                style={{
+                  borderColor: "rgba(168,85,247,.3)",
+                  background: "rgba(168,85,247,.04)",
+                }}
+              >
                 <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs text-white/60"
+                  className="mr-2 font-mono text-[9px]"
+                  style={{ color: "rgba(168,85,247,.6)" }}
                 >
-                  {tag}
+                  ▸
                 </span>
-              ))}
+                {project.impact}
+              </div>
+            </div>
+
+            <div className="mt-5">
+              <div
+                className="mb-2 font-mono text-[8px] tracking-[0.3em]"
+                style={{ color: "rgba(168,85,247,.5)" }}
+              >
+                // STACK
+              </div>
+              <div
+                data-projects-reveal="7"
+                data-project-swap
+                className="flex flex-wrap gap-2"
+              >
+                {project.tags.map((tag, i) => (
+                  <span
+                    key={tag}
+                    className={i % 2 === 0 ? "hud-tag" : "hud-tag hud-tag-c"}
+                  >
+                    ◇ {tag}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div
@@ -334,12 +381,8 @@ export function Projects() {
               data-project-swap
               className="mt-7 flex flex-wrap gap-3"
             >
-              <button className="rounded-full border border-glowB/45 bg-white/[0.04] px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90 transition hover:bg-white/[0.08]">
-                {t.projects.viewCase}
-              </button>
-              <button className="rounded-full border border-glowV/45 bg-[linear-gradient(180deg,rgba(140,90,255,0.2),rgba(140,90,255,0.08))] px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/95 transition hover:shadow-[0_0_20px_rgba(140,90,255,0.28)]">
-                {t.projects.github}
-              </button>
+              <button className="hud-btn">◈ {t.projects.viewCase}</button>
+              <button className="hud-btn hud-btn-p">◈ {t.projects.github}</button>
             </div>
           </div>
 
@@ -348,9 +391,22 @@ export function Projects() {
             data-projects-reveal="6"
             data-project-swap
             data-project-swap-panel
-            className="relative rounded-3xl border border-white/10 bg-black/30 p-6"
+            className="relative border bg-black/40 p-6"
+            style={{
+              clipPath:
+                "polygon(0% 0%,92% 0%,100% 8%,100% 100%,8% 100%,0% 92%)",
+              borderColor: "rgba(168,85,247,.28)",
+              boxShadow: "inset 0 0 40px rgba(168,85,247,.04)",
+            }}
           >
-            <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-glowV/60 to-transparent" />
+            <div
+              className="pointer-events-none absolute left-0 top-0 h-px w-full"
+              style={{
+                background:
+                  "linear-gradient(90deg,transparent,rgba(168,85,247,.7) 60%,transparent)",
+                opacity: 0.55,
+              }}
+            />
 
             <div data-project-swap-panel-item>
               <div className="text-[10px] tracking-[0.45em] text-white/45">
@@ -361,28 +417,47 @@ export function Projects() {
               </div>
             </div>
 
-            <div
-              data-project-swap-panel-item
-              className="mt-6 space-y-3 text-sm"
-            >
-              <div className="flex justify-between">
-                <span className="text-white/50">{t.projects.category}</span>
-                <span className="text-white/75">
-                  {t.projects.categoryValue}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-white/50">{t.projects.focus}</span>
-                <span className="text-white/75">{t.projects.focusValue}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-white/50">{t.projects.stack}</span>
-                <span className="text-white/75">
-                  {project.tags.slice(0, 2).join(" / ")}
-                </span>
-              </div>
+            <div data-project-swap-panel-item className="mt-6 flex flex-col">
+              {(
+                [
+                  {
+                    label: t.projects.category,
+                    value: t.projects.categoryValue,
+                  },
+                  { label: t.projects.focus, value: t.projects.focusValue },
+                  {
+                    label: t.projects.stack,
+                    value: project.tags.slice(0, 2).join(" / "),
+                  },
+                ] as { label: string; value: string }[]
+              ).map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="relative flex items-center justify-between px-3 py-2 text-sm"
+                  style={{
+                    borderBottom: "1px solid rgba(168,85,247,.08)",
+                  }}
+                >
+                  <span
+                    className="absolute left-0 font-mono text-[8px]"
+                    style={{ color: "rgba(0,255,224,.3)" }}
+                  >
+                    ◂
+                  </span>
+                  <span
+                    className="font-mono text-[9px] tracking-[0.2em] uppercase pl-2"
+                    style={{ color: "rgba(255,255,255,.38)" }}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className="font-mono text-[10px] tracking-[0.1em]"
+                    style={{ color: "rgba(238,244,255,.75)" }}
+                  >
+                    {value}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div

@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tactical Interface — Preview v3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      :root {
+        --purple:       #a855f7;
+        --purple-deep:  #7f5cff;
+        --purple-light: #c084fc;
+        --cyan:         #00ffe0;
+        --nav-red:      #da5f66;
+        --nav-blue:     #4ca8ff;
+        --ink-0:        #06060a;
+        --ink-1:        #0b0f17;
+        --ink-2:        #121723;
+        --text:         rgba(238, 244, 255, 0.90);
+        --text-soft:    rgba(214, 225, 248, 0.65);
+        --text-dim:     rgba(180, 200, 230, 0.42);
+      }
+
+      body {
+        font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+        background:
+          radial-gradient(1200px 800px at 78% -8%,  rgba(76, 100, 255, 0.13), transparent 60%),
+          radial-gradient(1000px 700px at 10%  30%,  rgba(140, 90, 255, 0.12), transparent 62%),
+          linear-gradient(180deg, var(--ink-1), var(--ink-0));
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed; inset: 0;
+        pointer-events: none; z-index: 0;
+        background-image: repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px,
+          transparent 1px, transparent 3px
+        );
+        opacity: 0.35;
+      }
+
+      .page { max-width: 1100px; margin: 0 auto; padding: 60px 32px; position: relative; z-index: 1; }
+
+      /* ── TYPOGRAPHIC UTILITIES ─────────────────────────── */
+      .mono     { font-family: 'Share Tech Mono', monospace; }
+      .rajdhani { font-family: 'Rajdhani', sans-serif; }
+
+      /* ── PAGE HEADER ───────────────────────────────────── */
+      .page-header {
+        text-align: center; margin-bottom: 80px;
+        padding: 40px; position: relative;
+        border: 1px solid rgba(168,85,247,0.2);
+        background: rgba(168,85,247,0.03);
+      }
+      .page-header::before,
+      .page-header::after {
+        content: ''; position: absolute;
+        width: 20px; height: 20px;
+        border: 1.5px solid rgba(0,255,224,0.5);
+      }
+      .page-header::before { top:-1px;    left:-1px;  border-right:none; border-bottom:none; }
+      .page-header::after  { bottom:-1px; right:-1px; border-left:none;  border-top:none;   }
+      .ph-label { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:.4em; color:var(--cyan); opacity:.6; margin-bottom:10px; }
+      .ph-title { font-family:'Rajdhani',sans-serif; font-size:32px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--purple); text-shadow:0 0 20px rgba(168,85,247,.4); }
+      .ph-sub   { margin-top:8px; font-size:13px; color:var(--text-dim); }
+
+      /* ── SHOWCASE WRAPPER ──────────────────────────────── */
+      .showcase       { margin-bottom: 80px; }
+      .sh-label       { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:.4em; color:var(--cyan); opacity:.58; margin-bottom:6px; }
+      .sh-title       { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; text-transform:uppercase; letter-spacing:.18em; margin-bottom:4px; }
+      .sh-desc        { font-size:13px; color:var(--text-dim); margin-bottom:26px; line-height:1.65; }
+
+      .cmp-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+      .cmp-before, .cmp-after { padding:28px; position:relative; }
+      .cmp-before { background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08); border-radius:4px; }
+      .cmp-after  { background:rgba(168,85,247,.03); border:1px solid rgba(168,85,247,.22); border-radius:4px; }
+      .cmp-tag { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:.3em; padding:3px 8px; margin-bottom:18px; display:inline-block; border-radius:2px; }
+      .cmp-before .cmp-tag { background:rgba(255,255,255,.05); color:rgba(255,255,255,.35); }
+      .cmp-after  .cmp-tag { background:rgba(0,255,224,.07); color:var(--cyan); border:1px solid rgba(0,255,224,.2); }
+
+      .note-box { margin-top:16px; padding:14px 18px; background:rgba(0,255,224,.03); border-left:2px solid rgba(0,255,224,.3); font-size:12px; line-height:1.75; color:var(--text-soft); border-radius:0 4px 4px 0; }
+      .note-box strong { color:var(--cyan); }
+      .note-box code { font-family:'Share Tech Mono',monospace; color:rgba(168,85,247,.9); font-size:11px; }
+
+      .section-sep { height:1px; background:linear-gradient(90deg, transparent, rgba(168,85,247,.2) 30%, rgba(168,85,247,.2) 70%, transparent); margin:70px 0; }
+
+      /* ── SECTION TITLE ELEMENT ─────────────────────────── */
+      .sec-title-b { font-family:'Rajdhani',sans-serif; font-size:36px; font-weight:700; color:rgba(238,244,255,.88); text-shadow:0 0 12px rgba(140,90,255,.15); margin-bottom:14px; }
+      .sec-div-b   { display:flex; align-items:center; gap:8px; }
+      .sec-div-b .l  { height:1px; width:56px; background:rgba(255,255,255,.15); }
+      .sec-div-b .s  { height:1px; width:8px;  background:rgba(128,90,255,.6); }
+      .sec-div-b .m  { height:1px; width:96px; background:rgba(255,255,255,.1); }
+      .sec-div-b .d  { width:4px; height:4px; border-radius:50%; background:rgba(76,160,255,.7); }
+      .sec-div-b .xs { height:1px; width:40px; background:rgba(255,255,255,.1); }
+
+      .sec-title-a { display:flex; align-items:flex-start; gap:14px; margin-bottom:10px; }
+      .sec-num  { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--cyan); opacity:.62; margin-top:6px; letter-spacing:.2em; flex-shrink:0; }
+      .sec-name { font-family:'Rajdhani',sans-serif; font-size:42px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:rgba(238,244,255,.94); text-shadow:0 0 24px rgba(168,85,247,.28); display:block; line-height:1; }
+      .sec-sub  { display:block; font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--purple); opacity:.6; letter-spacing:.28em; margin-top:5px; }
+      .sec-rule { display:flex; align-items:center; margin-top:8px; }
+      .sec-rule .rl  { height:1px; background:rgba(168,85,247,.2); }
+      .sec-rule .rl.sh { width:40px; }
+      .sec-rule .rl.fx { flex:1; }
+      .sec-rule .nd { width:6px; height:6px; background:var(--purple); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); opacity:.5; margin:0 8px; flex-shrink:0; }
+      .sec-rule .nl { font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(168,85,247,.38); letter-spacing:.28em; padding:0 12px; flex-shrink:0; }
+      .sec-rule .nc { width:4px; height:4px; border-radius:50%; background:var(--cyan); opacity:.4; margin:0 8px; flex-shrink:0; }
+
+      /* ── CARDS ─────────────────────────────────────────── */
+      .card-b { background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.1); border-radius:20px; padding:24px; }
+      .card-b-title { font-size:16px; font-weight:600; color:rgba(238,244,255,.85); margin-bottom:8px; }
+      .card-b-body  { font-size:13px; color:rgba(214,225,248,.55); line-height:1.65; }
+
+      .card-a { background:rgba(168,85,247,.04); border:1px solid rgba(168,85,247,.25); padding:24px; position:relative; clip-path:polygon(0% 0%,93% 0%,100% 8%,100% 100%,7% 100%,0% 92%); }
+      .card-a::before,.card-a::after { content:''; position:absolute; width:14px; height:14px; }
+      .card-a::before { top:0; left:0; border-top:1.5px solid rgba(0,255,224,.5); border-left:1.5px solid rgba(0,255,224,.5); }
+      .card-a::after  { bottom:0; right:0; border-bottom:1.5px solid rgba(0,255,224,.5); border-right:1.5px solid rgba(0,255,224,.5); }
+      .card-a-line  { position:absolute; top:0; left:0; height:1px; width:100%; background:linear-gradient(90deg,transparent,var(--purple) 55%,transparent); opacity:.4; }
+      .card-a-label { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:.35em; color:var(--cyan); opacity:.58; margin-bottom:6px; }
+      .card-a-title { font-family:'Rajdhani',sans-serif; font-size:17px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:rgba(238,244,255,.9); margin-bottom:8px; }
+      .card-a-body  { font-size:13px; color:rgba(214,225,248,.55); line-height:1.65; }
+
+      /* ── SKILL BARS ────────────────────────────────────── */
+      .skills-b { display:flex; flex-direction:column; gap:14px; }
+      .skb-row  { display:flex; align-items:center; gap:12px; }
+      .skb-name { font-size:11px; color:rgba(255,255,255,.6); min-width:96px; }
+      .skb-track{ flex:1; height:4px; background:rgba(255,255,255,.08); border-radius:2px; }
+      .skb-fill { height:100%; background:linear-gradient(90deg,#a855f7,#00ffe0); border-radius:2px; box-shadow:0 0 6px rgba(0,255,224,.4); }
+      .skb-pct  { font-size:10px; color:rgba(255,255,255,.5); min-width:30px; text-align:right; }
+
+      .skills-a { display:flex; flex-direction:column; gap:10px; }
+      .ska-row  { display:flex; align-items:center; gap:12px; padding:10px 14px; background:rgba(0,0,0,.35); border:1px solid rgba(0,255,224,.12); position:relative; }
+      .ska-row::before,.ska-row::after { content:''; position:absolute; width:7px; height:7px; }
+      .ska-row::before { top:-1px;    left:-1px;  border-top:1px solid var(--purple); border-left:1px solid var(--purple); }
+      .ska-row::after  { bottom:-1px; right:-1px; border-bottom:1px solid var(--purple); border-right:1px solid var(--purple); }
+      .ska-ico  { font-size:8px; color:var(--cyan); opacity:.65; flex-shrink:0; }
+      .ska-name { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:.18em; color:var(--purple-light); min-width:88px; }
+      .ska-track{ flex:1; height:5px; background:rgba(0,0,0,.5); position:relative; }
+      .ska-fill { height:100%; background:linear-gradient(90deg,var(--purple-deep) 0%,var(--purple) 50%,var(--cyan) 100%); box-shadow:0 0 8px rgba(0,255,224,.5),inset 0 0 4px rgba(168,85,247,.3); }
+      .ska-pct  { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--cyan); min-width:30px; text-align:right; }
+      .ska-bytes{ font-family:'Share Tech Mono',monospace; font-size:9px; color:rgba(255,255,255,.28); min-width:64px; text-align:right; letter-spacing:.05em; }
+
+      /* github skills header */
+      .gh-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; padding:10px 14px; background:rgba(0,0,0,.3); border:1px solid rgba(168,85,247,.18); position:relative; }
+      .gh-header::before { content:''; position:absolute; top:0;left:0; height:1px; width:100%; background:linear-gradient(90deg,transparent,rgba(168,85,247,.4) 60%,transparent); }
+      .gh-dot { width:6px; height:6px; border-radius:50%; background:var(--cyan); animation:pulse-c 2s ease-in-out infinite; flex-shrink:0; }
+      .gh-label{ font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:.3em; color:rgba(0,255,224,.7); }
+      .gh-since{ font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(255,255,255,.28); margin-left:auto; letter-spacing:.1em; }
+
+      /* ── TAGS ──────────────────────────────────────────── */
+      .tags-b { display:flex; flex-wrap:wrap; gap:8px; }
+      .tag-b { font-size:11px; color:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); padding:4px 12px; border-radius:999px; letter-spacing:.18em; }
+
+      .tags-a { display:flex; flex-wrap:wrap; gap:8px; }
+      .tag-a { font-family:'Share Tech Mono',monospace; font-size:10px; color:rgba(168,85,247,.88); border:1px solid rgba(168,85,247,.28); background:rgba(168,85,247,.06); padding:4px 10px; letter-spacing:.14em; clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%); }
+      .tag-a.c { color:rgba(0,255,224,.82); border-color:rgba(0,255,224,.22); background:rgba(0,255,224,.05); }
+
+      /* ── BUTTONS ───────────────────────────────────────── */
+      .btns-b { display:flex; flex-wrap:wrap; gap:12px; }
+      .btn-b { padding:11px 24px; border:1px solid rgba(0,255,224,.3); background:transparent; color:rgba(255,255,255,.9); font-size:13px; font-weight:600; border-radius:999px; cursor:pointer; }
+      .btn-b.p { border-color:rgba(168,85,247,.35); }
+
+      .btns-a { display:flex; flex-wrap:wrap; gap:12px; }
+      .btn-a { font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; padding:12px 28px; border:1px solid rgba(0,255,224,.38); background:rgba(0,0,0,.5); color:var(--cyan); cursor:pointer; position:relative; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition:all .2s; }
+      .btn-a::before,.btn-a::after { content:''; position:absolute; width:8px; height:8px; }
+      .btn-a::before { top:-1px;    left:-1px;  border-top:1px solid var(--cyan);   border-left:1px solid var(--cyan);   }
+      .btn-a::after  { bottom:-1px; right:-1px; border-bottom:1px solid var(--cyan); border-right:1px solid var(--cyan); }
+      .btn-a:hover { background:rgba(0,255,224,.1); box-shadow:0 0 16px rgba(0,255,224,.25); color:#fff; }
+      .btn-a.p { border-color:rgba(168,85,247,.42); color:var(--purple-light); }
+      .btn-a.p::before { border-color:var(--purple); } .btn-a.p::after { border-color:var(--purple); }
+      .btn-a.p:hover { background:rgba(168,85,247,.14); box-shadow:0 0 16px rgba(168,85,247,.28); color:#fff; }
+
+      /* ── INFO ROWS ─────────────────────────────────────── */
+      .rows-b { display:flex; flex-direction:column; gap:12px; }
+      .row-b { display:flex; justify-content:space-between; gap:16px; font-size:13px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.05); }
+      .rl-b { color:rgba(255,255,255,.42); }
+      .rv-b { color:rgba(255,255,255,.75); }
+
+      .rows-a { display:flex; flex-direction:column; }
+      .row-a { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1px solid rgba(168,85,247,.08); position:relative; }
+      .row-a::before { content:'▸'; position:absolute; left:0; color:var(--cyan); opacity:.3; font-size:8px; }
+      .rl-a { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:.25em; color:rgba(255,255,255,.38); text-transform:uppercase; }
+      .rv-a { font-family:'Share Tech Mono',monospace; font-size:10px; color:rgba(238,244,255,.78); letter-spacing:.1em; }
+
+      /* ── STATUS DOT ────────────────────────────────────── */
+      @keyframes pulse-c { 0%,100% { opacity:.5; box-shadow:0 0 0 0 rgba(0,255,224,.4); } 50% { opacity:1; box-shadow:0 0 0 4px rgba(0,255,224,0); } }
+      @keyframes pulse-p { 0%,100% { opacity:.5; box-shadow:0 0 0 0 rgba(168,85,247,.4); } 50% { opacity:1; box-shadow:0 0 0 4px rgba(168,85,247,0); } }
+
+      .dot-a { display:inline-flex; align-items:center; gap:10px; font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:.24em; color:rgba(0,255,224,.8); }
+      .dot-a .d { width:6px; height:6px; border-radius:50%; background:var(--cyan); animation:pulse-c 2s ease-in-out infinite; }
+      .dot-a.p { color:rgba(168,85,247,.85); }
+      .dot-a.p .d { background:var(--purple); animation:pulse-p 2s ease-in-out infinite; }
+
+      /* ── SECTION MOCK FRAME ────────────────────────────── */
+      .smock { background: radial-gradient(900px 520px at 15% 35%, rgba(140,90,255,.10), transparent 62%), radial-gradient(900px 520px at 85% 55%, rgba(70,160,255,.08), transparent 64%), var(--ink-0); border:1px solid rgba(168,85,247,.14); padding:48px 40px; position:relative; overflow:hidden; }
+      .smock::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:42px 42px; opacity:.12; pointer-events:none; }
+      .smock::after  { content:''; position:absolute; top:0; bottom:0; left:-40%; width:40%; background:linear-gradient(90deg,transparent,rgba(140,90,255,.07) 50%,transparent); transform:skewX(-12deg); animation:sweep 7s linear infinite; pointer-events:none; }
+      @keyframes sweep { 0% { left:-40%; } 100% { left:140%; } }
+      .smock-in { position:relative; z-index:1; }
+
+      /* mock section header */
+      .mhdr { margin-bottom:32px; }
+      .mhdr-top { display:flex; align-items:flex-start; gap:14px; margin-bottom:10px; }
+      .mhdr-num { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--cyan); opacity:.6; margin-top:6px; letter-spacing:.2em; flex-shrink:0; }
+      .mhdr-name { font-family:'Rajdhani',sans-serif; font-size:42px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:rgba(238,244,255,.94); text-shadow:0 0 24px rgba(168,85,247,.3); line-height:1; display:block; }
+      .mhdr-sub  { display:block; font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--purple); opacity:.58; letter-spacing:.28em; margin-top:5px; }
+      .mhdr-rule { display:flex; align-items:center; }
+      .mr-l { height:1px; background:rgba(168,85,247,.2); }
+      .mr-l.sh { width:40px; } .mr-l.fx { flex:1; }
+      .mr-d { width:6px; height:6px; background:var(--purple); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); opacity:.5; margin:0 8px; flex-shrink:0; }
+      .mr-t { font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(168,85,247,.38); letter-spacing:.28em; padding:0 12px; flex-shrink:0; }
+      .mr-c { width:4px; height:4px; border-radius:50%; background:var(--cyan); opacity:.4; margin:0 8px; flex-shrink:0; }
+
+      /* two-col grid */
+      .g2 { display:grid; grid-template-columns:1.2fr 0.8fr; gap:32px; }
+      .g2-even { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+
+      /* area card */
+      .area-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+      .area-card { padding:16px; background:rgba(0,0,0,.3); border:1px solid rgba(168,85,247,.14); position:relative; clip-path:polygon(0% 0%,90% 0%,100% 18%,100% 100%,0% 100%); cursor:default; transition:border-color .25s,background .25s; }
+      .area-card:hover { border-color:rgba(168,85,247,.42); background:rgba(168,85,247,.06); }
+      .area-card::before { content:''; position:absolute; top:0;left:0; height:1px; width:100%; background:linear-gradient(90deg,rgba(0,255,224,.4),transparent 55%); opacity:0; transition:opacity .25s; }
+      .area-card:hover::before { opacity:1; }
+      .ac-lbl   { font-family:'Share Tech Mono',monospace; font-size:8px; color:var(--cyan); opacity:.55; letter-spacing:.3em; margin-bottom:5px; }
+      .ac-title { font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:rgba(238,244,255,.85); margin-bottom:4px; }
+      .ac-desc  { font-size:11px; color:rgba(214,225,248,.48); line-height:1.5; }
+
+      /* status panel */
+      .spanel { background:rgba(168,85,247,.04); border:1px solid rgba(168,85,247,.2); padding:24px; position:relative; clip-path:polygon(0% 0%,90% 0%,100% 8%,100% 100%,10% 100%,0% 92%); }
+      .spanel::before { content:''; position:absolute; top:0;left:0; height:1px; width:100%; background:linear-gradient(90deg,transparent,var(--purple) 60%,transparent); opacity:.4; }
+      .sp-lbl { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:.38em; color:rgba(255,255,255,.3); margin-bottom:5px; }
+      .sp-val { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:600; color:rgba(238,244,255,.85); margin-bottom:16px; }
+      .psep { height:1px; background:rgba(168,85,247,.14); margin:14px 0; }
+
+      /* ── HERO ELEMENTS ─────────────────────────────────── */
+      .hero-ey { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+      .hero-ey-l { height:1px; width:40px; background:rgba(255,255,255,.1); }
+      .hero-ey-t { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:.42em; color:rgba(255,255,255,.38); }
+      .hero-name { font-family:'Rajdhani',sans-serif; font-size:64px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; line-height:.95; color:rgba(238,244,255,.96); text-shadow:0 0 28px rgba(168,85,247,.38),0 0 56px rgba(168,85,247,.16); }
+      .hero-role { font-family:'Rajdhani',sans-serif; font-size:26px; font-weight:600; color:var(--cyan); text-shadow:0 0 12px rgba(0,255,224,.3); margin-top:8px; letter-spacing:.05em; }
+      .hero-desc { font-size:14px; line-height:1.72; color:rgba(214,225,248,.66); margin-top:18px; max-width:420px; }
+
+      /* hud card (simplified) */
+      .hud-card { background:rgba(168,85,247,.04); border:1px solid rgba(168,85,247,.28); padding:24px; position:relative; clip-path:polygon(0% 0%,92% 0%,100% 10%,100% 100%,8% 100%,0% 90%); }
+      .hud-card::before { content:''; position:absolute; top:0;left:0; height:1px; width:100%; background:linear-gradient(90deg,transparent,var(--purple) 60%,transparent); opacity:.44; }
+      .hud-card::after  { content:''; position:absolute; bottom:0;right:0; height:1px; width:55%; background:linear-gradient(90deg,transparent,var(--cyan)); opacity:.18; }
+      .hc-lbl  { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:.38em; color:rgba(255,255,255,.3); margin-bottom:4px; }
+      .hc-val  { font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:600; color:rgba(238,244,255,.85); }
+      .hc-sep  { height:1px; background:rgba(168,85,247,.14); margin:14px 0; }
+      /* hud grid bottom decoration */
+      .hc-foot { display:flex; align-items:center; gap:8px; margin-top:20px; opacity:.5; }
+      .hc-foot .fl { height:1px; flex:1; background:rgba(255,255,255,.1); }
+      .hc-foot .fd { width:4px; height:4px; border-radius:50%; background:var(--cyan); }
+      .hc-foot .fs { height:1px; width:32px; background:rgba(168,85,247,.4); }
+
+      /* ── HERO MOCK GRID ────────────────────────────────── */
+      .mock-hero { display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; }
+
+      /* ── PROJECTS ELEMENTS ─────────────────────────────── */
+      /* HUD stepper strip */
+      .stepper { display:flex; align-items:center; gap:0; margin-bottom:32px; overflow-x:auto; padding-bottom:4px; }
+      .step-item { display:flex; align-items:center; cursor:pointer; }
+      .step-diamond { width:16px; height:16px; background:rgba(168,85,247,.15); border:1px solid rgba(168,85,247,.3); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); transition:all .2s; }
+      .step-item.active .step-diamond { background:rgba(168,85,247,.5); border-color:var(--purple); box-shadow:0 0 8px rgba(168,85,247,.4); }
+      .step-connector { height:1px; width:20px; background:rgba(168,85,247,.2); }
+      .step-item:hover .step-diamond { background:rgba(168,85,247,.3); }
+      .step-label { font-family:'Share Tech Mono',monospace; font-size:7px; color:rgba(168,85,247,.4); text-align:center; margin-top:4px; letter-spacing:.1em; }
+      .stepper-wrap { display:flex; flex-direction:column; align-items:center; }
+
+      /* project display */
+      .proj-grid { display:grid; grid-template-columns:1.3fr 0.7fr; gap:28px; }
+      .proj-main { position:relative; }
+      .proj-num { font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--cyan); opacity:.55; letter-spacing:.3em; margin-bottom:10px; }
+      .proj-title { font-family:'Rajdhani',sans-serif; font-size:36px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:rgba(238,244,255,.94); text-shadow:0 0 20px rgba(168,85,247,.28); line-height:1.05; margin-bottom:4px; }
+      .proj-sub { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--cyan); opacity:.65; letter-spacing:.25em; margin-bottom:16px; }
+      .proj-desc { font-size:13px; color:rgba(214,225,248,.65); line-height:1.72; margin-bottom:14px; }
+      .proj-impact { font-family:'Share Tech Mono',monospace; font-size:10px; color:rgba(168,85,247,.7); letter-spacing:.12em; padding:8px 12px; border-left:2px solid rgba(168,85,247,.3); background:rgba(168,85,247,.04); margin-bottom:18px; line-height:1.5; }
+      .proj-btns { display:flex; gap:12px; margin-top:4px; }
+
+      /* project meta panel */
+      .proj-meta { background:rgba(168,85,247,.04); border:1px solid rgba(168,85,247,.2); padding:20px; position:relative; clip-path:polygon(0% 0%,92% 0%,100% 8%,100% 100%,8% 100%,0% 92%); }
+      .proj-meta::before { content:''; position:absolute; top:0;left:0; height:1px; width:100%; background:linear-gradient(90deg,transparent,var(--purple) 60%,transparent); opacity:.4; }
+      .pm-section { margin-bottom:14px; }
+      .pm-label { font-family:'Share Tech Mono',monospace; font-size:8px; color:var(--cyan); opacity:.5; letter-spacing:.3em; margin-bottom:6px; }
+      .pm-value { font-family:'Share Tech Mono',monospace; font-size:10px; color:rgba(238,244,255,.75); letter-spacing:.12em; }
+      .pm-tags  { display:flex; flex-wrap:wrap; gap:5px; }
+      .pm-tag   { font-family:'Share Tech Mono',monospace; font-size:9px; color:rgba(168,85,247,.8); border:1px solid rgba(168,85,247,.22); background:rgba(168,85,247,.05); padding:3px 8px; letter-spacing:.1em; clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
+      .pm-tag.c { color:rgba(0,255,224,.75); border-color:rgba(0,255,224,.2); background:rgba(0,255,224,.04); }
+
+      /* ── SITEPHASENAV ELEMENTS — paleta roxo/ciano ────── */
+      .nav-panel {
+        width: 230px;
+        background: linear-gradient(180deg,rgba(8,10,18,.96),rgba(6,8,14,.92));
+        border: 1px solid rgba(168,85,247,.35);
+        padding: 12px;
+        position: relative;
+        clip-path: polygon(0% 0%, 86% 0%, 91% 4%, 100% 4%, 100% 100%, 4% 100%, 0% 96%);
+        box-shadow: 0 0 28px rgba(168,85,247,.14), inset 0 0 40px rgba(168,85,247,.04);
+      }
+      /* video placeholder */
+      .nav-video-bg {
+        position: absolute; inset: 0;
+        background: repeating-linear-gradient(45deg, rgba(20,25,35,.8) 0px, rgba(20,25,35,.8) 10px, rgba(15,18,28,.8) 10px, rgba(15,18,28,.8) 20px);
+        border-radius: 2px;
+      }
+      .nav-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,10,18,.86),rgba(5,7,12,.92)); }
+      .nav-content { position:relative; z-index:1; }
+      /* top bar */
+      .nav-topbar { display:flex; align-items:center; justify-content:center; gap:8px; padding:6px 8px; margin-bottom:10px; border:1px solid rgba(168,85,247,.25); background:rgba(168,85,247,.08); border-radius:4px; }
+      .nav-lang { display:inline-flex; height:20px; width:52px; align-items:center; border-radius:999px; border:1px solid rgba(168,85,247,.22); background:rgba(0,0,0,.25); position:relative; padding:2px; }
+      .nav-lang-thumb { position:absolute; left:2px; top:2px; height:16px; width:24px; border-radius:999px; background:rgba(127,92,255,.55); transition:transform .2s; }
+      .nav-lang-labels { position:relative; z-index:1; display:grid; width:100%; grid-template-columns:1fr 1fr; font-family:'Share Tech Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.14em; text-align:center; }
+      .nav-clock { font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(200,220,255,.7); letter-spacing:.14em; }
+      /* nav items */
+      .nav-items { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+      .nav-item { display:block; padding:8px; border:1px solid; position:relative; clip-path:polygon(0% 0%,92% 0%,100% 22%,100% 100%,8% 100%,0% 78%); transition:.2s; cursor:pointer; }
+      .nav-item.idle   { border-color:rgba(168,85,247,.2); background:linear-gradient(90deg,rgba(20,12,35,.55),rgba(10,8,20,.75)); }
+      .nav-item.idle:hover { border-color:rgba(168,85,247,.4); background:linear-gradient(90deg,rgba(30,15,50,.55),rgba(15,10,28,.75)); }
+      .nav-item.active { border-color:rgba(0,255,224,.42); background:linear-gradient(90deg,rgba(0,35,28,.65),rgba(0,18,14,.82)); box-shadow:inset 0 0 20px rgba(0,255,224,.04); }
+      .nav-item-row { display:flex; align-items:center; justify-content:space-between; }
+      .nav-item-left { display:flex; align-items:center; gap:8px; }
+      .nav-icon { display:grid; place-items:center; width:18px; height:18px; border-radius:3px; border:1px solid; font-size:9px; }
+      .nav-item.idle   .nav-icon { border-color:rgba(168,85,247,.28); color:rgba(168,85,247,.7); }
+      .nav-item.active .nav-icon { border-color:rgba(0,255,224,.55); color:var(--cyan); }
+      .nav-item-name { font-family:'Share Tech Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.22em; }
+      .nav-item.idle   .nav-item-name { color:rgba(255,255,255,.72); }
+      .nav-item.active .nav-item-name { color:rgba(255,255,255,.96); }
+      .nav-item-arrow { font-size:9px; }
+      .nav-item.idle   .nav-item-arrow { color:rgba(168,85,247,.4); }
+      .nav-item.active .nav-item-arrow { color:var(--cyan); }
+      .nav-item-sub { margin-top:2px; padding-left:26px; font-family:'Share Tech Mono',monospace; font-size:7px; text-transform:uppercase; letter-spacing:.2em; color:rgba(255,255,255,.35); }
+      /* divider */
+      .nav-div { height:1px; background:linear-gradient(90deg,transparent,rgba(168,85,247,.35),transparent); margin:8px 0; }
+      /* contact items */
+      .nav-contacts { display:flex; flex-direction:column; gap:6px; }
+      .nav-contact { display:block; padding:8px; border:1px solid rgba(168,85,247,.18); background:linear-gradient(90deg,rgba(20,12,35,.45),rgba(10,8,20,.65)); position:relative; clip-path:polygon(0% 0%,92% 0%,100% 22%,100% 100%,8% 100%,0% 78%); transition:.2s; cursor:pointer; }
+      .nav-contact:hover { border-color:rgba(0,255,224,.35); background:linear-gradient(90deg,rgba(0,25,22,.5),rgba(0,12,10,.7)); }
+      .nav-contact-row { display:flex; align-items:center; gap:8px; }
+      .nav-contact-label { font-family:'Share Tech Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.22em; color:rgba(255,255,255,.75); }
+      .nav-contact-sub { margin-top:2px; padding-left:26px; font-family:'Share Tech Mono',monospace; font-size:7px; text-transform:uppercase; letter-spacing:.2em; color:rgba(255,255,255,.35); }
+      .nav-video-label { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(255,255,255,.15); letter-spacing:.2em; }
+
+      /* ── ICON PLACEHOLDERS ─────────────────────────────── */
+      .ico { display:inline-block; font-size:10px; opacity:.7; }
+
+      @media (max-width:700px) {
+        .cmp-grid  { grid-template-columns:1fr; }
+        .mock-hero { grid-template-columns:1fr; }
+        .g2        { grid-template-columns:1fr; }
+        .g2-even   { grid-template-columns:1fr; }
+        .proj-grid { grid-template-columns:1fr; }
+        .area-grid { grid-template-columns:1fr; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page">
+
+      <!-- ══════════════ PAGE HEADER ══════════════ -->
+      <div class="page-header">
+        <div class="ph-label">// VISUAL SYSTEM v3 — TACTICAL INTERFACE</div>
+        <div class="ph-title">Portfolio Design Preview</div>
+        <div class="ph-sub">Abra no navegador · compare Antes vs Depois · aprove antes de implementar</div>
+      </div>
+
+      <!-- ══════════════ EL 01: SECTION TITLE ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 01</div>
+        <div class="sh-title">Título de Seção</div>
+        <div class="sh-desc">Número de seção em ciano + subtítulo descritivo + divider com diamond notch.</div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">ATUAL</div>
+            <div class="sec-title-b">Sobre</div>
+            <div class="sec-div-b"><span class="l"></span><span class="s"></span><span class="m"></span><span class="d"></span><span class="xs"></span></div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO</div>
+            <div class="sec-title-a">
+              <span class="sec-num">// 02</span>
+              <div><span class="sec-name">Sobre</span><span class="sec-sub">PROFILE // STATUS</span></div>
+            </div>
+            <div class="sec-rule">
+              <div class="rl sh"></div><div class="nd"></div><div class="rl fx"></div>
+              <div class="nl">SECTION_02</div><div class="rl" style="width:24px"></div><div class="nc"></div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança:</strong> número em Share Tech Mono ciano + subtítulo descritivo + divider com diamond notch no centro. Rajdhani grande mantido.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ EL 02: CARDS ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 02</div>
+        <div class="sh-title">Cards / Painéis</div>
+        <div class="sh-desc">Angular com corner brackets em L, top-line glow e label monospace.</div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">ATUAL</div>
+            <div class="card-b"><div class="card-b-title">Área de Atuação</div><div class="card-b-body">Suporte operacional e análise de processos administrativos.</div></div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO</div>
+            <div class="card-a"><div class="card-a-line"></div><div class="card-a-label">◈ ÁREA_02</div><div class="card-a-title">Suporte Operacional</div><div class="card-a-body">Análise de processos e apoio a operações distribuídas.</div></div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança:</strong> clip-path angular nos cantos opostos + corner brackets ciano como pseudo-elementos + top-line gradiente roxo + label com ◈. Sem border-radius.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ EL 03: SKILL BARS (GITHUB) ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 03 — nova proposta</div>
+        <div class="sh-title">Skill Bars vinculadas ao GitHub</div>
+        <div class="sh-desc">
+          Em vez de percentuais subjetivos, a barra mostra a <strong style="color:rgba(0,255,224,.8)">proporção real de bytes por linguagem</strong> somando todos os seus repositórios.
+          A GitHub Languages API rastreia isso automaticamente — cada repo retorna os bytes por linguagem, você agrega e calcula o percentual total.
+          Fica mais honesto, mais técnico, e impressiona quem está recrutando.
+        </div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">CONCEITO ANTERIOR (manual / subjetivo)</div>
+            <div class="skills-b" style="margin-top:10px">
+              <div class="skb-row"><span class="skb-name">◇ REACT ◇</span><div class="skb-track"><div class="skb-fill" style="width:88%"></div></div><span class="skb-pct">88%</span></div>
+              <div class="skb-row"><span class="skb-name">◇ TAILWIND ◇</span><div class="skb-track"><div class="skb-fill" style="width:82%"></div></div><span class="skb-pct">82%</span></div>
+              <div class="skb-row"><span class="skb-name">◇ TYPESCRIPT ◇</span><div class="skb-track"><div class="skb-fill" style="width:70%"></div></div><span class="skb-pct">70%</span></div>
+            </div>
+            <div style="margin-top:14px; font-size:12px; color:rgba(255,255,255,.3); font-style:italic">percentuais escolhidos na mão — subjetivo</div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO (GitHub API — dados reais)</div>
+            <div class="gh-header" style="margin-top:10px">
+              <div class="gh-dot"></div>
+              <span class="gh-label">GITHUB_API // LANGUAGES_LIVE</span>
+              <span class="gh-since">atualizado: 2026-04-14</span>
+            </div>
+            <div class="skills-a">
+              <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">TYPESCRIPT</span><div class="ska-track"><div class="ska-fill" style="width:38%"></div></div><span class="ska-pct">38%</span><span class="ska-bytes">// 142k bytes</span></div>
+              <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">JAVASCRIPT</span><div class="ska-track"><div class="ska-fill" style="width:24%"></div></div><span class="ska-pct">24%</span><span class="ska-bytes">// 90k bytes</span></div>
+              <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">CSS</span><div class="ska-track"><div class="ska-fill" style="width:19%"></div></div><span class="ska-pct">19%</span><span class="ska-bytes">// 71k bytes</span></div>
+              <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">GO</span><div class="ska-track"><div class="ska-fill" style="width:13%"></div></div><span class="ska-pct">13%</span><span class="ska-bytes">// 49k bytes</span></div>
+              <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">HTML</span><div class="ska-track"><div class="ska-fill" style="width:6%"></div></div><span class="ska-pct">6%</span><span class="ska-bytes">// 22k bytes</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box">
+          <strong>Como implementar:</strong> <code>GET /users/h-novakoski/repos</code> → para cada repo <code>GET /repos/{owner}/{repo}/languages</code> → soma bytes por linguagem → calcula percentual. Chamada no build time (Vite plugin ou script) gera um JSON estático — sem custo de API em runtime. Mostra as linguagens reais que você usa, não o que você acha que sabe.
+          <br><br>
+          <strong>Onde vai ficar:</strong> na seção <strong>Sobre</strong>, abaixo dos area cards — não no Hero. Hero fica clean como apresentação.
+        </div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ EL 04: TAGS ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 04</div>
+        <div class="sh-title">Tags / Badges</div>
+        <div class="sh-desc">Clip-path diagonal em vez de pills arredondados genéricos.</div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">ATUAL</div>
+            <div class="tags-b" style="margin-top:12px"><span class="tag-b">Engenharia de UI</span><span class="tag-b">React + TypeScript</span><span class="tag-b">Design Digital</span><span class="tag-b">Tailwind CSS</span></div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO</div>
+            <div class="tags-a" style="margin-top:12px"><span class="tag-a">◇ UI ENGINEERING</span><span class="tag-a c">◇ REACT + TS</span><span class="tag-a">◇ DESIGN DIGITAL</span><span class="tag-a c">◇ TAILWIND CSS</span></div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança:</strong> clip-path diagonal + ◇ prefix + Share Tech Mono + alternância roxo/ciano. Sem border-radius.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ EL 05: BUTTONS ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 05</div>
+        <div class="sh-title">Botões CTA</div>
+        <div class="sh-desc">Corte angular + monospace + corner brackets. Passe o mouse para ver hover.</div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">ATUAL</div>
+            <div class="btns-b" style="margin-top:14px"><button class="btn-b">Sobre</button><button class="btn-b p">Ver Projetos</button></div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO</div>
+            <div class="btns-a" style="margin-top:14px"><button class="btn-a">◈ SOBRE</button><button class="btn-a p">◈ PROJETOS</button></div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança:</strong> clip-path diagonal + Share Tech Mono uppercase + ◈ + corner brackets como pseudo-elemento. Hover: glow colorido. Sem border-radius.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ EL 06: INFO ROWS ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// elemento 06</div>
+        <div class="sh-title">Linhas de Dados — HUD Readout</div>
+        <div class="sh-desc">Leitura de dados estilo terminal — painéis de status no Hero e About.</div>
+        <div class="cmp-grid">
+          <div class="cmp-before">
+            <div class="cmp-tag">ATUAL</div>
+            <div class="rows-b" style="margin-top:12px"><div class="row-b"><span class="rl-b">Idade</span><span class="rv-b">23 anos</span></div><div class="row-b"><span class="rl-b">Localização</span><span class="rv-b">Curitiba, PR</span></div><div class="row-b"><span class="rl-b">Especialidade</span><span class="rv-b">Front-End</span></div></div>
+          </div>
+          <div class="cmp-after">
+            <div class="cmp-tag">PROPOSTO</div>
+            <div class="rows-a" style="margin-top:12px"><div class="row-a"><span class="rl-a">AGE</span><span class="rv-a">23_ANOS</span></div><div class="row-a"><span class="rl-a">LOCATION</span><span class="rv-a">CURITIBA_PR</span></div><div class="row-a"><span class="rl-a">SPECIALTY</span><span class="rv-a">FRONT_END</span></div></div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança:</strong> indicador ▸ lateral + labels monospace uppercase + separador roxo sutil + valores em ALL_CAPS com underscore. Sente como leitura de sistema.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ MOCK 01: HERO (SIMPLIFICADO) ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// mock completo 01</div>
+        <div class="sh-title">Hero Section — Apresentação clean (sem skills)</div>
+        <div class="sh-desc">Hero é apresentação: nome + cargo + frase + CTAs + tags. Painel direito fica com status e info de contato — sem barras de skill.</div>
+        <div class="smock">
+          <div class="smock-in mock-hero">
+            <!-- LEFT -->
+            <div>
+              <div class="hero-ey"><div class="hero-ey-l"></div><div class="hero-ey-t">◈ MISSÃO // DOSSIE OPERACIONAL</div></div>
+              <div class="hero-name">HIGOR<br>HENRIQUE</div>
+              <div class="hero-role">// Front-End Developer</div>
+              <div class="hero-desc">I build interfaces focused on visual storytelling, performance, and product clarity. Cinematic design with formal execution.</div>
+              <div class="btns-a" style="margin-top:22px"><button class="btn-a">◈ SOBRE</button><button class="btn-a p">◈ PROJETOS</button></div>
+              <div class="tags-a" style="margin-top:18px"><span class="tag-a">◇ UI ENGINEERING</span><span class="tag-a c">◇ REACT + TS</span><span class="tag-a">◇ DESIGN DIGITAL</span><span class="tag-a c">◇ TAILWIND</span></div>
+            </div>
+            <!-- RIGHT — HUD card simplificado, sem skills -->
+            <div class="hud-card">
+              <div class="hc-lbl">// STATUS OPERACIONAL</div>
+              <div class="hc-val" style="margin-bottom:4px">Disponível para oportunidades</div>
+              <div class="dot-a" style="margin-bottom:4px"><span class="d"></span> ONLINE // ABERTO A PROPOSTAS</div>
+              <div class="hc-sep"></div>
+              <div class="rows-a">
+                <div class="row-a"><span class="rl-a">AGE</span><span class="rv-a">23_ANOS</span></div>
+                <div class="row-a"><span class="rl-a">LOCATION</span><span class="rv-a">CURITIBA_PR</span></div>
+                <div class="row-a"><span class="rl-a">SPECIALTY</span><span class="rv-a">FRONT_END</span></div>
+                <div class="row-a"><span class="rl-a">STATUS</span><span class="rv-a" style="color:var(--cyan)">DISPONÍVEL</span></div>
+              </div>
+              <div class="hc-foot"><div class="fl"></div><div class="fd"></div><div class="fs"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box"><strong>Mudança no Hero:</strong> skill bars removidas — ficam na seção Sobre. Painel direito mostra apenas status + data rows. Hero fica clean e focado como uma tela de abertura de missão.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ MOCK 02: ABOUT (COM GITHUB SKILLS) ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// mock completo 02</div>
+        <div class="sh-title">About Section — Com GitHub Skills abaixo</div>
+        <div class="sh-desc">Sobre tem mais substância: perfil + areas + painel de status + GitHub skills abaixo em largura total. Passe o mouse nos area cards.</div>
+        <div class="smock">
+          <div class="smock-in">
+            <div class="mhdr">
+              <div class="mhdr-top"><span class="mhdr-num">// 02</span><div><span class="mhdr-name">Sobre</span><span class="mhdr-sub">PROFILE // STATUS</span></div></div>
+              <div class="mhdr-rule"><div class="mr-l sh"></div><div class="mr-d"></div><div class="mr-l fx"></div><div class="mr-t">SECTION_02</div><div class="mr-l" style="width:24px"></div><div class="mr-c"></div></div>
+            </div>
+            <!-- main 2-col -->
+            <div class="g2">
+              <div>
+                <p style="font-size:14px;line-height:1.75;color:rgba(214,225,248,.7)">Profissional com background em administração e suporte operacional, em transição para desenvolvimento front-end. Combino visão de negócio com desenvolvimento técnico.</p>
+                <p style="font-size:13px;line-height:1.75;color:rgba(214,225,248,.52);margin-top:14px">Cursando Análise e Desenvolvimento de Sistemas, com foco em interfaces React e design de sistemas visuais complexos.</p>
+                <div class="area-grid">
+                  <div class="area-card"><div class="ac-lbl">◈ ÁREA_01</div><div class="ac-title">Administrativo</div><div class="ac-desc">Gestão de processos e operações corporativas.</div></div>
+                  <div class="area-card"><div class="ac-lbl">◈ ÁREA_02</div><div class="ac-title">Suporte Op.</div><div class="ac-desc">Apoio técnico e análise operacional.</div></div>
+                  <div class="area-card"><div class="ac-lbl">◈ ÁREA_03</div><div class="ac-title">Tecnologia</div><div class="ac-desc">React, TypeScript, UI engineering.</div></div>
+                  <div class="area-card"><div class="ac-lbl">◈ ÁREA_04</div><div class="ac-title">Design Digital</div><div class="ac-desc">Photoshop, Illustrator, sistemas visuais.</div></div>
+                </div>
+              </div>
+              <div class="spanel">
+                <div class="sp-lbl">// STATUS ACADÊMICO</div>
+                <div class="sp-val">Em Formação</div>
+                <div class="rows-a"><div class="row-a"><span class="rl-a">FORMAÇÃO</span><span class="rv-a">ADS_2026</span></div><div class="row-a"><span class="rl-a">CURSO</span><span class="rv-a">ANÁLISE_SIS</span></div><div class="row-a"><span class="rl-a">INGLÊS</span><span class="rv-a">INTERMEDIÁRIO</span></div></div>
+                <div class="psep"></div>
+                <div class="tags-a" style="gap:6px"><span class="tag-a" style="font-size:9px;padding:3px 8px">◇ HTML</span><span class="tag-a c" style="font-size:9px;padding:3px 8px">◇ CSS</span><span class="tag-a" style="font-size:9px;padding:3px 8px">◇ JS</span><span class="tag-a c" style="font-size:9px;padding:3px 8px">◇ REACT</span><span class="tag-a" style="font-size:9px;padding:3px 8px">◇ TAILWIND</span><span class="tag-a c" style="font-size:9px;padding:3px 8px">◇ PS</span></div>
+              </div>
+            </div>
+
+            <!-- GITHUB SKILLS — full width below -->
+            <div style="margin-top:32px">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+                <div style="height:1px;width:32px;background:rgba(168,85,247,.3)"></div>
+                <div class="gh-label" style="font-size:10px">◈ COMPETÊNCIAS // GITHUB_LIVE_DATA</div>
+                <div style="height:1px;flex:1;background:rgba(168,85,247,.15)"></div>
+                <div class="gh-since">updated: 2026-04-14</div>
+              </div>
+              <div class="gh-header" style="margin-bottom:10px">
+                <div class="gh-dot"></div>
+                <span class="gh-label">GITHUB_API :: /users/h-novakoski/repos → aggregate languages</span>
+              </div>
+              <div class="skills-a">
+                <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">TYPESCRIPT</span><div class="ska-track"><div class="ska-fill" style="width:38%"></div></div><span class="ska-pct">38%</span><span class="ska-bytes">// 142k bytes</span></div>
+                <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">JAVASCRIPT</span><div class="ska-track"><div class="ska-fill" style="width:24%"></div></div><span class="ska-pct">24%</span><span class="ska-bytes">// 90k bytes</span></div>
+                <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">CSS</span><div class="ska-track"><div class="ska-fill" style="width:19%"></div></div><span class="ska-pct">19%</span><span class="ska-bytes">// 71k bytes</span></div>
+                <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">GO</span><div class="ska-track"><div class="ska-fill" style="width:13%"></div></div><span class="ska-pct">13%</span><span class="ska-bytes">// 49k bytes</span></div>
+                <div class="ska-row"><span class="ska-ico">◈</span><span class="ska-name">HTML</span><div class="ska-track"><div class="ska-fill" style="width:6%"></div></div><span class="ska-pct">6%</span><span class="ska-bytes">// 22k bytes</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ MOCK 03: PROJECTS ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// mock completo 03</div>
+        <div class="sh-title">Projects Section — Layout Real + HUD Treatment</div>
+        <div class="sh-desc">Mantém o layout original: card grande com conteúdo (esq + dir), <strong style="color:rgba(0,255,224,.8)">stepper HUD de diamantes na base do card</strong>. O tratamento HUD é aplicado dentro dessa estrutura — sem mover peças de lugar.</div>
+        <div class="smock">
+          <div class="smock-in">
+
+            <!-- section header -->
+            <div class="mhdr">
+              <div class="mhdr-top"><span class="mhdr-num">// 03</span><div><span class="mhdr-name">Projetos</span><span class="mhdr-sub">ACTIVE_FILES // ARCHIVE</span></div></div>
+              <div class="mhdr-rule"><div class="mr-l sh"></div><div class="mr-d"></div><div class="mr-l fx"></div><div class="mr-t">SECTION_03</div><div class="mr-l" style="width:24px"></div><div class="mr-c"></div></div>
+            </div>
+
+            <!-- ══ OUTER CARD (replicates the scanlines-bg wrapper div) ══ -->
+            <div style="position:relative;border:1px solid rgba(255,255,255,.1);border-radius:28px;overflow:hidden;background:rgba(255,255,255,.03)">
+
+              <!-- background: cinematic image overlay simulation -->
+              <div style="pointer-events:none;position:absolute;inset:0">
+                <!-- image tint (sem imagem real no preview) -->
+                <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(168,85,247,.08) 0%,rgba(0,255,224,.04) 50%,transparent 100%)"></div>
+                <!-- dark cinematic vignette -->
+                <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,transparent 0,rgba(0,0,0,.45) 55%,rgba(0,0,0,.82) 100%)"></div>
+                <!-- subtle grid -->
+                <div style="position:absolute;inset:0;opacity:.05;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:40px 40px"></div>
+                <!-- scanlines -->
+                <div style="position:absolute;inset:0;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px);background-size:100% 4px"></div>
+              </div>
+
+              <!-- ── CONTENT GRID (replicates p-8 lg:grid-cols-[1.15fr_.85fr]) ── -->
+              <div style="position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;padding:40px 40px 36px">
+
+                <!-- LEFT SIDE -->
+                <div style="max-width:560px">
+
+                  <!-- eyebrow line (replicates ACTIVE_FILE row) -->
+                  <div style="margin-bottom:20px;display:flex;align-items:center;gap:10px">
+                    <span style="width:6px;height:6px;border-radius:50%;background:rgba(70,160,255,.8);flex-shrink:0"></span>
+                    <span style="height:1px;flex:1;background:rgba(255,255,255,.1)"></span>
+                    <span style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.42em;color:rgba(255,255,255,.42)">ACTIVE_FILE</span>
+                  </div>
+
+                  <!-- title -->
+                  <div style="font-family:'Rajdhani',sans-serif;font-size:36px;font-weight:700;letter-spacing:.03em;color:rgba(238,244,255,.96);text-shadow:0 0 20px rgba(168,85,247,.3);line-height:1.05;margin-bottom:4px">Edge Gateway Service</div>
+
+                  <!-- subtitle pill (HUD treatment: angular instead of rounded-full) -->
+                  <div style="display:inline-flex;align-items:center;margin-bottom:20px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.25em;color:rgba(0,255,224,.68);border:1px solid rgba(0,255,224,.22);background:rgba(0,0,0,.3);padding:4px 12px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">◈ UNIFIED REQUEST ROUTING</div>
+
+                  <!-- desc with // label -->
+                  <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(168,85,247,.5);letter-spacing:.3em;margin-bottom:6px">// DESC</div>
+                  <p style="font-size:13px;color:rgba(214,225,248,.68);line-height:1.75;margin-bottom:16px">Gateway layer that centralizes request routing, throttling, and normalization for multiple backend domains.</p>
+
+                  <!-- impact block with // label -->
+                  <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(168,85,247,.5);letter-spacing:.3em;margin-bottom:6px">// IMPACT</div>
+                  <div style="border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.25);padding:14px 16px;font-size:13px;color:rgba(238,244,255,.72);margin-bottom:20px;border-radius:10px">
+                    <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.42);margin-right:8px">▸</span>More consistent traffic handling and simpler client integration.
+                  </div>
+
+                  <!-- tags row with // label -->
+                  <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(168,85,247,.5);letter-spacing:.3em;margin-bottom:8px">// STACK</div>
+                  <div class="tags-a" style="margin-bottom:22px"><span class="tag-a">◇ GO</span><span class="tag-a c">◇ GATEWAY</span><span class="tag-a">◇ ROUTING</span><span class="tag-a c">◇ API</span></div>
+
+                  <!-- CTA buttons (HUD angular treatment) -->
+                  <div class="btns-a"><button class="btn-a">◈ VER PROJETO</button><button class="btn-a p">◈ GITHUB</button></div>
+                </div>
+
+                <!-- RIGHT SIDE — intel panel (replicates the right HUD panel) -->
+                <div style="position:relative;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);padding:24px;border-radius:20px;clip-path:polygon(0% 0%,92% 0%,100% 8%,100% 100%,8% 100%,0% 92%)">
+                  <!-- top line glow -->
+                  <div style="pointer-events:none;position:absolute;left:0;top:0;height:1px;width:100%;background:linear-gradient(90deg,transparent,rgba(168,85,247,.6),transparent);opacity:.6"></div>
+
+                  <!-- status header -->
+                  <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.38em;color:rgba(255,255,255,.3);margin-bottom:5px">// STATUS</div>
+                  <div style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:rgba(238,244,255,.85);margin-bottom:20px">Em Desenvolvimento</div>
+
+                  <!-- data rows (HUD treatment) -->
+                  <div style="display:flex;flex-direction:column">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid rgba(168,85,247,.08);position:relative">
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.38);text-transform:uppercase">◂ CATEGORIA</span>
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(238,244,255,.75);letter-spacing:.1em">BACKEND_INFRA</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid rgba(168,85,247,.08)">
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.38);text-transform:uppercase">◂ FOCO</span>
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(238,244,255,.75);letter-spacing:.1em">API_GATEWAY</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px">
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.38);text-transform:uppercase">◂ STACK</span>
+                      <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(238,244,255,.75);letter-spacing:.1em">GO / DOCKER</span>
+                    </div>
+                  </div>
+
+                  <!-- divider -->
+                  <div style="height:1px;background:rgba(255,255,255,.08);margin:14px 0"></div>
+
+                  <!-- helper text -->
+                  <div style="font-size:12px;color:rgba(214,225,248,.45);line-height:1.7">Use os diamantes abaixo para navegar entre projetos — ou arraste/deslize.</div>
+
+                  <!-- bottom decoration -->
+                  <div style="pointer-events:none;position:absolute;bottom:14px;left:20px;right:20px;display:flex;align-items:center;gap:8px;opacity:.55">
+                    <span style="height:1px;flex:1;background:rgba(255,255,255,.1)"></span>
+                    <span style="width:4px;height:4px;border-radius:50%;background:rgba(70,160,255,.7)"></span>
+                    <span style="height:1px;width:32px;background:rgba(168,85,247,.4)"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ══ STEPPER STRIP — border-t, sits at the BOTTOM of the card ══ -->
+              <div style="position:relative;border-top:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.4);padding:20px 32px">
+
+                <!-- diamonds row centered, same style as HudStepper -->
+                <div style="display:flex;align-items:center;justify-content:center;gap:0">
+
+                  <!-- diamond 01 — active -->
+                  <div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
+                    <div style="width:18px;height:18px;background:rgba(168,85,247,.55);border:1px solid var(--purple);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);box-shadow:0 0 10px rgba(168,85,247,.5)"></div>
+                  </div>
+                  <div style="height:1px;width:20px;background:rgba(168,85,247,.3)"></div>
+
+                  <!-- diamonds 02-10 — inactive -->
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div><div style="height:1px;width:20px;background:rgba(168,85,247,.15)"></div>
+                  <div style="width:14px;height:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);flex-shrink:0"></div>
+
+                </div>
+
+                <!-- counter (subtle, below diamonds) -->
+                <div style="display:flex;justify-content:center;margin-top:8px">
+                  <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(168,85,247,.45);letter-spacing:.22em">01 / 10</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="note-box">
+          <strong>Layout preservado:</strong> card grande → conteúdo (esq + dir) → stepper na base com border-top. <strong>HUD treatment aplicado dentro:</strong> subtitle pill com clip-path diagonal, labels <code>// DESC</code> <code>// IMPACT</code> <code>// STACK</code>, tags angulares, botões angulares, data rows com ◂ indicator. O painel direito ganha clip-path hexagonal + top-line glow. Diamantes e contador ficam no strip de baixo — exatamente onde estão no código real.
+        </div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ══════════════ MOCK 04: SITEPHASENAV ══════════════ -->
+      <div class="showcase">
+        <div class="sh-label">// mock completo 04</div>
+        <div class="sh-title">SitePhaseNav — Menu Lateral</div>
+        <div class="sh-desc">Paleta unificada roxo/ciano — mesma identidade do resto do site. Mesma estrutura, sem o accent vermelho. Active state em ciano, nav border em roxo. Passe o mouse nos itens.</div>
+
+        <!-- nav centralizado, sem before/after -->
+        <div style="display:flex;justify-content:center;padding:32px 0">
+          <div class="nav-panel">
+            <div class="nav-video-bg"><div class="nav-video-label">[ VIDEO_BG ]</div></div>
+            <div class="nav-overlay"></div>
+            <div class="nav-content">
+
+              <!-- top: lang toggle + clock -->
+              <div class="nav-topbar">
+                <div class="nav-lang">
+                  <div class="nav-lang-thumb"></div>
+                  <div class="nav-lang-labels">
+                    <span style="color:white">PT</span>
+                    <span style="color:rgba(168,85,247,.6)">EN</span>
+                  </div>
+                </div>
+                <span class="nav-clock">14:32:07</span>
+              </div>
+
+              <!-- seções label -->
+              <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.35em;color:rgba(0,255,224,.42);margin-bottom:6px;padding:0 2px">// FASES_DO_SITE</div>
+
+              <!-- nav items -->
+              <div class="nav-items">
+                <a class="nav-item active">
+                  <div class="nav-item-row">
+                    <div class="nav-item-left">
+                      <div class="nav-icon" style="font-size:9px">◈</div>
+                      <span class="nav-item-name">Inicio</span>
+                    </div>
+                    <span class="nav-item-arrow">›</span>
+                  </div>
+                  <div class="nav-item-sub">// entrada principal</div>
+                </a>
+                <a class="nav-item idle">
+                  <div class="nav-item-row">
+                    <div class="nav-item-left">
+                      <div class="nav-icon" style="font-size:9px">◇</div>
+                      <span class="nav-item-name">Sobre</span>
+                    </div>
+                    <span class="nav-item-arrow">▾</span>
+                  </div>
+                  <div class="nav-item-sub">// perfil e status</div>
+                </a>
+                <a class="nav-item idle">
+                  <div class="nav-item-row">
+                    <div class="nav-item-left">
+                      <div class="nav-icon" style="font-size:9px">◇</div>
+                      <span class="nav-item-name">Projetos</span>
+                    </div>
+                    <span class="nav-item-arrow">▾</span>
+                  </div>
+                  <div class="nav-item-sub">// arquivos ativos</div>
+                </a>
+              </div>
+
+              <!-- divider roxo -->
+              <div class="nav-div"></div>
+
+              <!-- contatos label -->
+              <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.35em;color:rgba(0,255,224,.42);margin-bottom:6px;padding:0 2px">// CONTATOS</div>
+
+              <!-- contacts -->
+              <div class="nav-contacts">
+                <a class="nav-contact">
+                  <div class="nav-contact-row">
+                    <div class="nav-icon" style="border-color:rgba(168,85,247,.25);color:rgba(168,85,247,.7);font-size:9px">in</div>
+                    <span class="nav-contact-label">LinkedIn</span>
+                  </div>
+                  <div class="nav-contact-sub">// perfil profissional</div>
+                </a>
+                <a class="nav-contact">
+                  <div class="nav-contact-row">
+                    <div class="nav-icon" style="border-color:rgba(168,85,247,.25);color:rgba(168,85,247,.7);font-size:9px">W</div>
+                    <span class="nav-contact-label">WhatsApp</span>
+                  </div>
+                  <div class="nav-contact-sub">// contato rapido</div>
+                </a>
+                <a class="nav-contact">
+                  <div class="nav-contact-row">
+                    <div class="nav-icon" style="border-color:rgba(168,85,247,.25);color:rgba(168,85,247,.7);font-size:9px">@</div>
+                    <span class="nav-contact-label">Email</span>
+                  </div>
+                  <div class="nav-contact-sub">// canal formal</div>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="note-box">
+          <strong>Mudanças no Nav:</strong> border e box-shadow em roxo (sem vermelho) + active state em ciano + idle items em roxo sutil + labels <code>// FASES_DO_SITE</code> e <code>// CONTATOS</code> em ciano + divider roxo + icons trocados por ◈/◇ no idle/active (mais consistente com o sistema visual). Hover nos contatos acende borda ciano.
+        </div>
+      </div>
+
+      <!-- ══════════════ FOOTER ══════════════ -->
+      <div style="text-align:center;margin-top:80px;padding:32px;border:1px solid rgba(168,85,247,.15);position:relative">
+        <div style="position:absolute;top:-1px;left:-1px;width:18px;height:18px;border-top:1.5px solid rgba(0,255,224,.4);border-left:1.5px solid rgba(0,255,224,.4)"></div>
+        <div style="position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-bottom:1.5px solid rgba(0,255,224,.4);border-right:1.5px solid rgba(0,255,224,.4)"></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.3em;color:rgba(168,85,247,.5);margin-bottom:12px">// TACTICAL INTERFACE v3 — PREVIEW DOCUMENT</div>
+        <div style="font-size:13px;color:rgba(214,225,248,.45);line-height:1.8">
+          Curtiu o conceito? Algo a ajustar antes de implementar no código?<br>
+          Skill bars no GitHub, Projects e Nav mockados aqui prontos para código.
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

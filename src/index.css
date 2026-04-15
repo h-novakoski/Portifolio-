@@ -9,6 +9,60 @@
   --ink-0: #06060a;
   --ink-1: #0b0f17;
   --ink-2: #121723;
+
+  /* ===== PALETA PRINCIPAL: ROXO + CIANO ===== */
+  /* Roxo - Primário (70%) */
+  --color-purple-primary: #a855f7;
+  --color-purple-deep: #7f5cff;
+  --color-purple-light: #c084fc;
+
+  /* Ciano - Secundário (25%) */
+  --color-cyan-bright: #00ffe0;
+  --color-cyan-subtle: #00e0d9;
+  --color-cyan-dim: #00d9d0;
+
+  /* ===== VARIÁVEIS COM OPACIDADE ===== */
+  /* Roxo (rgba) */
+  --color-purple-primary-rgb: 168, 85, 247;
+  --color-cyan-bright-rgb: 0, 255, 224;
+
+  /* ===== BORDAS E BACKGROUNDS ===== */
+  /* Border colors */
+  --border-purple-light: rgba(168, 85, 247, 0.35);
+  --border-purple-medium: rgba(168, 85, 247, 0.5);
+  --border-purple-strong: rgba(168, 85, 247, 0.65);
+  --border-cyan-light: rgba(0, 255, 224, 0.3);
+  --border-cyan-medium: rgba(0, 255, 224, 0.4);
+  --border-cyan-strong: rgba(0, 255, 224, 0.65);
+
+  /* Background colors */
+  --bg-purple-ultra-light: rgba(168, 85, 247, 0.03);
+  --bg-purple-light: rgba(168, 85, 247, 0.08);
+  --bg-purple-medium: rgba(168, 85, 247, 0.15);
+  --bg-cyan-ultra-light: rgba(0, 255, 224, 0.03);
+  --bg-cyan-light: rgba(0, 255, 224, 0.08);
+  --bg-cyan-medium: rgba(0, 255, 224, 0.15);
+
+  /* ===== ESTADOS ===== */
+  /* Hover */
+  --border-hover: var(--border-cyan-medium);
+  --bg-hover: var(--bg-purple-light);
+
+  /* Active */
+  --border-active: var(--border-cyan-strong);
+  --bg-active: linear-gradient(
+    90deg,
+    rgba(0, 255, 224, 0.15),
+    rgba(168, 85, 247, 0.08)
+  );
+
+  /* ===== GLOWS ===== */
+  --glow-purple: 0 0 15px rgba(168, 85, 247, 0.2);
+  --glow-cyan: 0 0 10px rgba(0, 255, 224, 0.2);
+  --glow-purple-strong: 0 0 12px rgba(168, 85, 247, 0.4);
+  --glow-cyan-strong: 0 0 12px rgba(0, 255, 224, 0.4);
+
+  /* ===== CORES HERDADAS (compatibilidade) ===== */
   --hud-blue: #4c9eff;
   --hud-purple: #8c5aff;
   --hud-amber: #f5a623;
@@ -33,11 +87,6 @@ body {
       rgba(140, 90, 255, 0.12),
       transparent 62%
     ),
-    radial-gradient(
-      1200px 900px at 50% 120%,
-      rgba(245, 166, 35, 0.07),
-      transparent 60%
-    ),
     linear-gradient(180deg, var(--ink-1), var(--ink-0));
   color: var(--text-main);
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
@@ -54,7 +103,7 @@ body {
 }
 
 ::selection {
-  background: rgba(140, 90, 255, 0.35);
+  background: var(--border-purple-light);
 }
 
 h1,
@@ -63,6 +112,85 @@ h3,
 .hud-title {
   font-family: "Rajdhani", "Space Grotesk", sans-serif;
   letter-spacing: 0.01em;
+  text-shadow: var(--glow-purple);
+}
+
+/* Glow classes for new color system */
+.glow-purple {
+  color: var(--color-purple-primary);
+  text-shadow: var(--glow-purple);
+}
+
+.glow-cyan {
+  color: var(--color-cyan-bright);
+  text-shadow: var(--glow-cyan);
+}
+
+/* Border glow utilities */
+.border-glow-purple {
+  border-color: var(--border-purple-light);
+}
+
+.border-glow-cyan {
+  border-color: var(--border-cyan-light);
+}
+
+/* Scanlines + grid pattern for HUD cards */
+.scanlines-bg {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 224, 0.025) 2px,
+    rgba(0, 255, 224, 0.025) 4px
+  );
+}
+
+.hud-title {
+  text-shadow: var(--glow-purple);
+}
+
+/* Grid pattern for Hero background */
+.grid-pattern {
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 255, 224, 0.008) 1px,
+    transparent 1px
+  );
+  background-size: 50px 50px;
+}
+
+/* Corner accent decorator */
+.corner-accent {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.corner-accent::before,
+.corner-accent::after {
+  content: "◇";
+  color: var(--color-cyan-bright);
+  opacity: 0.6;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Skill bar styling */
+.skill-bar {
+  background: linear-gradient(
+    90deg,
+    var(--color-purple-primary) 0%,
+    var(--color-cyan-bright) 100%
+  );
+  box-shadow:
+    0 0 6px rgba(0, 255, 224, 0.4),
+    inset 0 0 4px rgba(168, 85, 247, 0.2);
+  border-radius: 2px;
+  height: 4px;
+  border: 1px solid var(--border-cyan-light);
 }
 
 body::before {
@@ -71,7 +199,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.12;
+  opacity: 0.30;
   background-image: repeating-linear-gradient(
     0deg,
     rgba(255, 255, 255, 0.02) 0,
@@ -190,4 +318,143 @@ body::before {
 .app-shell--ready .reveal-phase-7 {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* ── TACTICAL INTERFACE: HUD TAGS ──────────────────────────── */
+/* Diagonal clip-path tags — purple variant */
+.hud-tag {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 10px;
+  color: rgba(168, 85, 247, 0.88);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  background: rgba(168, 85, 247, 0.06);
+  padding: 4px 10px;
+  letter-spacing: 0.14em;
+  clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
+  display: inline-block;
+}
+/* Cyan variant */
+.hud-tag-c {
+  color: rgba(0, 255, 224, 0.82);
+  border-color: rgba(0, 255, 224, 0.22);
+  background: rgba(0, 255, 224, 0.05);
+}
+
+/* ── TACTICAL INTERFACE: HUD BUTTONS ───────────────────────── */
+.hud-btn {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 11px 26px;
+  border: 1px solid rgba(0, 255, 224, 0.38);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--color-cyan-bright);
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+.hud-btn::before,
+.hud-btn::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+}
+.hud-btn::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--color-cyan-bright);
+  border-left: 1px solid var(--color-cyan-bright);
+}
+.hud-btn::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--color-cyan-bright);
+  border-right: 1px solid var(--color-cyan-bright);
+}
+.hud-btn:hover {
+  background: rgba(0, 255, 224, 0.1);
+  box-shadow: 0 0 16px rgba(0, 255, 224, 0.25);
+  color: #fff;
+}
+/* Purple variant */
+.hud-btn-p {
+  border-color: rgba(168, 85, 247, 0.42);
+  color: var(--color-purple-light);
+}
+.hud-btn-p::before {
+  border-color: var(--color-purple-primary);
+}
+.hud-btn-p::after {
+  border-color: var(--color-purple-primary);
+}
+.hud-btn-p:hover {
+  background: rgba(168, 85, 247, 0.14);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.28);
+  color: #fff;
+}
+
+/* ── SECTION TITLE: number + subtitle treatment ─────────────── */
+.sec-num {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 10px;
+  color: var(--color-cyan-bright);
+  opacity: 0.62;
+  letter-spacing: 0.2em;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.sec-sub {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 9px;
+  color: var(--color-purple-primary);
+  opacity: 0.58;
+  letter-spacing: 0.28em;
+  display: block;
+  margin-top: 4px;
+}
+/* Diamond notch divider */
+.sec-rule {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.sec-rule-line {
+  height: 1px;
+  background: rgba(168, 85, 247, 0.2);
+}
+.sec-rule-diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--color-purple-primary);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  opacity: 0.5;
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+.sec-rule-label {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 8px;
+  color: rgba(168, 85, 247, 0.38);
+  letter-spacing: 0.28em;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+.sec-rule-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-cyan-bright);
+  opacity: 0.4;
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(0, 255, 224, 0.4); }
+  50%       { opacity: 1;   box-shadow: 0 0 0 5px rgba(0, 255, 224, 0); }
 }

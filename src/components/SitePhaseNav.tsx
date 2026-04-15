@@ -153,10 +153,13 @@ export function SitePhaseNav() {
       <div className="pointer-events-none absolute inset-y-0 left-0 z-[95] hidden lg:block">
         <aside className="pointer-events-auto sticky top-24 ml-4">
           <div
-            className="relative isolate w-[230px] overflow-hidden rounded-2xl border border-[#da5f66]/45 bg-[linear-gradient(180deg,rgba(10,12,20,.9),rgba(7,9,14,.75))] p-3 shadow-[0_0_30px_rgba(218,95,102,.18)] backdrop-blur-md"
+            className="relative isolate w-[230px] overflow-hidden rounded-2xl border bg-[linear-gradient(180deg,rgba(8,10,18,.96),rgba(6,8,14,.92))] p-3 backdrop-blur-md"
             style={{
               clipPath:
                 "polygon(0% 0%, 86% 0%, 91% 4%, 100% 4%, 100% 100%, 4% 100%, 0% 96%)",
+              borderColor: "rgba(168,85,247,.35)",
+              boxShadow:
+                "0 0 28px rgba(168,85,247,.14), inset 0 0 40px rgba(168,85,247,.04)",
             }}
           >
             <div className="pointer-events-none absolute inset-0">
@@ -171,7 +174,13 @@ export function SitePhaseNav() {
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,16,.82),rgba(6,8,12,.86))]" />
             </div>
 
-            <div className="relative z-10 mb-3 rounded-md border border-[#da5f66]/35 bg-[#d55f66]/14 px-2 py-1">
+            <div
+              className="relative z-10 mb-3 rounded-md border px-2 py-1"
+              style={{
+                borderColor: "rgba(168,85,247,.25)",
+                background: "rgba(168,85,247,.08)",
+              }}
+            >
               <div className="flex items-center justify-center gap-1.5">
                 <div className="flex items-center gap-1.5">
                   <button
@@ -182,7 +191,8 @@ export function SitePhaseNav() {
                         ? "Alterar idioma para English"
                         : "Alterar idioma para Portugues"
                     }
-                    className="relative inline-flex h-6 w-[62px] items-center rounded-full border border-[#ff949c]/25 bg-black/22 p-[2px]"
+                    className="relative inline-flex h-6 w-[62px] items-center rounded-full border bg-black/22 p-[2px]"
+                    style={{ borderColor: "rgba(168,85,247,.22)" }}
                   >
                     <span
                       aria-hidden="true"
@@ -196,91 +206,134 @@ export function SitePhaseNav() {
                     <span className="relative z-10 grid w-full grid-cols-2 text-[8px] font-medium tracking-[0.14em]">
                       <span
                         className={
-                          locale === "pt" ? "text-white" : "text-[#ffb4b8]/70"
+                          locale === "pt"
+                            ? "text-white"
+                            : "text-white/40"
                         }
                       >
                         PT
                       </span>
                       <span
                         className={
-                          locale === "en" ? "text-white" : "text-[#ffb4b8]/70"
+                          locale === "en"
+                            ? "text-white"
+                            : "text-white/40"
                         }
                       >
                         EN
                       </span>
                     </span>
                   </button>
-                  <span className="text-[8px] font-medium tracking-[0.16em] text-[#ffd2d6]/78">
+                  <span className="text-[8px] font-medium tracking-[0.14em] text-white/60">
                     {formatTime(clock)}
                   </span>
                 </div>
               </div>
             </div>
 
+            <div
+              className="relative z-10 mb-2 font-mono text-[8px] tracking-[0.35em] px-0.5"
+              style={{ color: "rgba(0,255,224,.42)" }}
+            >
+              // FASES_DO_SITE
+            </div>
+
             <div className="relative z-10 space-y-2">
               {phases.map((phase) => {
                 const isActive = activeId === phase.id;
-                const Icon = phase.icon;
 
                 return (
                   <a
                     key={phase.id}
                     href={phase.href}
-                    className={[
-                      "group relative block overflow-hidden border p-2 transition",
-                      isActive
-                        ? "border-[#4ca8ff]/65 bg-[linear-gradient(90deg,rgba(26,52,78,.65),rgba(12,20,30,.82))]"
-                        : "border-[#274056]/65 bg-[linear-gradient(90deg,rgba(16,28,43,.55),rgba(10,16,24,.75))] hover:border-[#4ca8ff]/45",
-                    ].join(" ")}
+                    className="group relative block overflow-hidden border p-2 transition"
                     style={{
                       clipPath:
                         "polygon(0% 0%, 92% 0%, 100% 22%, 100% 100%, 8% 100%, 0% 78%)",
+                      borderColor: isActive
+                        ? "rgba(0,255,224,.42)"
+                        : "rgba(168,85,247,.2)",
+                      background: isActive
+                        ? "linear-gradient(90deg,rgba(0,35,28,.65),rgba(0,18,14,.82))"
+                        : "linear-gradient(90deg,rgba(20,12,35,.55),rgba(10,8,20,.75))",
+                      boxShadow: isActive
+                        ? "inset 0 0 20px rgba(0,255,224,.04)"
+                        : "none",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          "rgba(168,85,247,.4)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          "rgba(168,85,247,.2)";
+                      }
                     }}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span
-                          className={[
-                            "grid h-5 w-5 place-items-center rounded-sm border",
-                            isActive
-                              ? "border-[#4ca8ff]/75 text-[#83c8ff]"
-                              : "border-[#2a4a63]/65 text-white/65",
-                          ].join(" ")}
+                          className="grid h-5 w-5 place-items-center rounded-sm border text-[9px]"
+                          style={{
+                            borderColor: isActive
+                              ? "rgba(0,255,224,.55)"
+                              : "rgba(168,85,247,.28)",
+                            color: isActive
+                              ? "var(--color-cyan-bright)"
+                              : "rgba(168,85,247,.7)",
+                          }}
                         >
-                          <Icon size={12} />
+                          {isActive ? "◈" : "◇"}
                         </span>
                         <span
-                          className={[
-                            "text-[10px] uppercase tracking-[0.22em]",
-                            isActive ? "text-[#e7f3ff]" : "text-white/78",
-                          ].join(" ")}
+                          className="text-[10px] uppercase tracking-[0.22em]"
+                          style={{
+                            color: isActive
+                              ? "rgba(238,244,255,.96)"
+                              : "rgba(255,255,255,.72)",
+                          }}
                         >
                           {phase.title}
                         </span>
                       </div>
 
                       <span
-                        className={
-                          isActive ? "text-[#7fcbff]" : "text-white/40"
-                        }
+                        style={{
+                          color: isActive
+                            ? "var(--color-cyan-bright)"
+                            : "rgba(168,85,247,.4)",
+                          fontSize: "10px",
+                        }}
                       >
-                        {phase.code}
+                        ›
                       </span>
                     </div>
 
-                    <div className="mt-1 pl-7 text-[8px] uppercase tracking-[0.2em] text-white/45">
-                      {phase.subtitle}
+                    <div className="mt-1 pl-7 text-[8px] uppercase tracking-[0.2em] text-white/40">
+                      // {phase.subtitle}
                     </div>
-
-                    <span className="pointer-events-none absolute right-1 top-1 text-[9px] text-[#ff6d78]/80">
-                      ▾
-                    </span>
                   </a>
                 );
               })}
             </div>
 
-            <div className="relative z-10 my-3 h-px bg-gradient-to-r from-transparent via-[#da5f66]/45 to-transparent" />
+            <div
+              className="relative z-10 my-3 h-px"
+              style={{
+                background:
+                  "linear-gradient(90deg,transparent,rgba(168,85,247,.35),transparent)",
+              }}
+            />
+
+            <div
+              className="relative z-10 mb-2 font-mono text-[8px] tracking-[0.35em] px-0.5"
+              style={{ color: "rgba(0,255,224,.42)" }}
+            >
+              // CONTATOS
+            </div>
 
             <div className="relative z-10 space-y-2">
               {contacts.map((item) => {
@@ -292,28 +345,42 @@ export function SitePhaseNav() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group relative block overflow-hidden border border-[#2a4a63]/65 bg-[linear-gradient(90deg,rgba(16,28,43,.55),rgba(10,16,24,.75))] p-2 transition hover:border-[#4ca8ff]/45"
+                    className="group relative block overflow-hidden border p-2 transition"
                     style={{
                       clipPath:
                         "polygon(0% 0%, 92% 0%, 100% 22%, 100% 100%, 8% 100%, 0% 78%)",
+                      borderColor: "rgba(168,85,247,.18)",
+                      background:
+                        "linear-gradient(90deg,rgba(20,12,35,.45),rgba(10,8,20,.65))",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(0,255,224,.35)";
+                      (e.currentTarget as HTMLElement).style.background =
+                        "linear-gradient(90deg,rgba(0,25,22,.5),rgba(0,12,10,.7))";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(168,85,247,.18)";
+                      (e.currentTarget as HTMLElement).style.background =
+                        "linear-gradient(90deg,rgba(20,12,35,.45),rgba(10,8,20,.65))";
                     }}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="grid h-5 w-5 place-items-center rounded-sm border border-[#2a4a63]/65 text-white/70 group-hover:border-[#4ca8ff]/60 group-hover:text-[#a8daff]">
+                      <span
+                        className="grid h-5 w-5 place-items-center rounded-sm border text-white/70 transition group-hover:text-white/90"
+                        style={{ borderColor: "rgba(168,85,247,.25)" }}
+                      >
                         <Icon size={12} />
                       </span>
-                      <span className="text-[10px] uppercase tracking-[0.22em] text-white/80 group-hover:text-white/90">
+                      <span className="text-[10px] uppercase tracking-[0.22em] text-white/75 group-hover:text-white/90">
                         {item.label}
                       </span>
                     </div>
 
-                    <div className="mt-1 pl-7 text-[8px] uppercase tracking-[0.2em] text-white/45">
-                      {item.subtitle}
+                    <div className="mt-1 pl-7 text-[8px] uppercase tracking-[0.2em] text-white/35">
+                      // {item.subtitle}
                     </div>
-
-                    <span className="pointer-events-none absolute right-1 top-1 text-[9px] text-[#ff6d78]/80">
-                      ▾
-                    </span>
                   </a>
                 );
               })}
@@ -375,7 +442,6 @@ export function SitePhaseNav() {
                     <span
                       className={isActive ? "text-glowB/90" : "text-white/45"}
                     >
-                      {phase.code}
                     </span>
                   </a>
                 );
